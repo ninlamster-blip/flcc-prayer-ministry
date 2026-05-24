@@ -133,6 +133,10 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:#1a2
 .sched-cell.today{background:#fffbe6;outline:2px solid var(--gold);}
 .sched-cell.today .sched-date{background:#ffd070;}
 @media(max-width:600px){.sched-grid{grid-template-columns:1fr 1fr;}}
+/* SUB-TABS (inside CPM panel) */
+.stab{background:none;border:none;padding:9px 16px;cursor:pointer;font-size:13px;font-weight:600;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;}
+.stab:hover{color:var(--navy);}
+.stab.on{color:var(--navy);border-bottom-color:var(--navy);}
 /* MISC */
 .divider{border:none;border-top:1px solid var(--border);margin:14px 0;}
 .tip{font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.6;}
@@ -204,8 +208,15 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:#1a2
   #print-zone .pr-name{font-weight:700;}
 
   /* ── PAGE BREAKS ── */
+  /* Each room section starts on its own page */
   #print-zone .room-break{page-break-before:always;}
   #print-zone .room-break:first-child{page-break-before:auto;}
+  /* Each church starts on its own page — but NOT the very first one in a section */
+  #print-zone .church-block+.church-block{page-break-before:always;}
+  /* Category label never orphaned at bottom of page */
+  #print-zone .sec-lbl{page-break-after:avoid;}
+  /* Keep a prayer row together (no split mid-row) */
+  #print-zone .pr{page-break-inside:avoid;}
 
   /* ── MINISTRY TAGS ── */
   #print-zone .mtag{display:inline-block;font-size:11px;padding:1px 6px;border-radius:4px;background:#e4eefa;color:#1a3560;margin:6px 14px 4px;}
@@ -254,9 +265,10 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:#1a2
   <button class="tab"     onclick="sw('lists',this)">🙏 Prayer Lists</button>
   <button class="tab"     onclick="sw('rooms',this)">🖥️ Zoom Rooms</button>
   <button class="tab"     onclick="sw('submit',this)">📋 Submit Form</button>
-  <button class="tab"     onclick="sw('cpm',this)">📅 CPM Schedule</button>
-  <button class="tab"     onclick="sw('intercessory',this)">🙏 Intercessory</button>
-  <button class="tab"     onclick="sw('devotion',this)">👷 Workers Devotion</button>
+  <button class="tab"     onclick="sw('cpm',this)">📅 Schedules</button>
+  <button class="tab"     onclick="sw('answered',this)">🙌 Answered Prayers</button>
+  <button class="tab"     onclick="sw('unanswered',this)">⏳ Unanswered Prayers</button>
+  <button class="tab"     onclick="sw('duplicates',this)">🔁 Duplicates</button>
 </nav>
 
 <!-- ══════ OVERVIEW ══════ -->
@@ -300,7 +312,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:#1a2
     </div>
     <div style="overflow-x:auto;">
       <table class="tbl"><thead><tr>
-        <th>Church</th><th>Lead Pastor</th><th>Status</th><th>Items</th><th>Room</th><th>Action</th>
+        <th>Church</th><th>Lead Pastor</th><th>Prayer Coordinator</th><th>Status</th><th>Items</th><th>Room</th><th>Action</th>
       </tr></thead><tbody id="ov-tb"></tbody></table>
     </div>
   </div>
@@ -407,31 +419,69 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:#1a2
   </div>
 </div>
 
-<!-- ══════ CPM SCHEDULE ══════ -->
+<!-- ══════ SCHEDULES (CPM + Intercessory + Workers) ══════ -->
 <div class="panel" id="panel-cpm">
-  <div class="card">
-    <div class="card-head"><span>📅</span><h3>Corporate Prayer 2026 — 2nd Wednesday · 6:30 PM</h3></div>
-    <div class="card-body"><div id="cpm-sched-grid"></div></div>
+  <div style="display:flex;border-bottom:2px solid var(--border);margin-bottom:16px;overflow-x:auto;">
+    <button class="stab on" id="stab-cpm" onclick="swSub('cpm',this)">📅 CPM Schedule</button>
+    <button class="stab" id="stab-int" onclick="swSub('int',this)">🙏 Intercessory Prayer</button>
+    <button class="stab" id="stab-dev" onclick="swSub('dev',this)">👷 Workers Devotion</button>
   </div>
-</div>
-
-<!-- ══════ INTERCESSORY PRAYER ══════ -->
-<div class="panel" id="panel-intercessory">
-  <div class="card">
-    <div class="card-head"><span>🙏</span><h3>Intercessory Prayer 2026 — Every Friday</h3></div>
-    <div class="card-body"><div id="int-sched-grid"></div></div>
-  </div>
-</div>
-
-<!-- ══════ WORKERS DEVOTION ══════ -->
-<div class="panel" id="panel-devotion">
-  <div class="card">
-    <div class="card-head"><span>👷</span><h3>All Workers Devotion 2026 — Fridays 9:20 AM</h3></div>
-    <div class="card-body">
-      <p class="tip">Exhortation 5 minutes then Prayer time.</p>
-      <div id="dev-sched-grid"></div>
+  <div id="subpanel-cpm">
+    <div class="card">
+      <div class="card-head"><span>📅</span><h3>Corporate Prayer 2026 — 2nd Wednesday · 6:30 PM</h3></div>
+      <div class="card-body"><div id="cpm-sched-grid"></div></div>
     </div>
   </div>
+  <div id="subpanel-int" style="display:none;">
+    <div class="card">
+      <div class="card-head"><span>🙏</span><h3>Intercessory Prayer 2026 — Every Friday</h3></div>
+      <div class="card-body"><div id="int-sched-grid"></div></div>
+    </div>
+  </div>
+  <div id="subpanel-dev" style="display:none;">
+    <div class="card">
+      <div class="card-head"><span>👷</span><h3>All Workers Devotion 2026 — Fridays 9:20 AM</h3></div>
+      <div class="card-body">
+        <p class="tip">Exhortation 5 minutes then Prayer time.</p>
+        <div id="dev-sched-grid"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ UNANSWERED PRAYERS ══════ -->
+<div class="panel" id="panel-unanswered">
+  <div style="display:flex;gap:8px;align-items:center;margin-bottom:16px;flex-wrap:wrap;">
+    <div style="flex:1;">
+      <h2 style="font-size:16px;font-weight:800;color:var(--navy);">Unanswered Prayers</h2>
+      <p style="font-size:12px;color:var(--muted);margin-top:3px;">Active prayer requests still awaiting God's answer — church by church</p>
+    </div>
+    <button class="btn btn-ghost btn-sm" onclick="pUnanswered()">🖨️ Print</button>
+  </div>
+  <div id="unanswered-container"></div>
+</div>
+
+<!-- ══════ DUPLICATES ══════ -->
+<div class="panel" id="panel-duplicates">
+  <div style="display:flex;gap:8px;align-items:center;margin-bottom:16px;flex-wrap:wrap;">
+    <div style="flex:1;">
+      <h2 style="font-size:16px;font-weight:800;color:var(--navy);">Duplicate Prayer Requests</h2>
+      <p style="font-size:12px;color:var(--muted);margin-top:3px;">Same person or concern appearing in multiple churches — coordinate before the meeting</p>
+    </div>
+  </div>
+  <div id="duplicates-container"></div>
+</div>
+
+<!-- ══════ ANSWERED PRAYERS ══════ -->
+<div class="panel" id="panel-answered">
+  <div style="display:flex;gap:8px;align-items:center;margin-bottom:16px;flex-wrap:wrap;">
+    <div style="flex:1;">
+      <h2 style="font-size:16px;font-weight:800;color:var(--navy);">Answered Prayers & Praise Reports</h2>
+      <p style="font-size:12px;color:var(--muted);margin-top:3px;">Thanksgiving items and prayer updates — church by church</p>
+    </div>
+    <button class="btn btn-ghost btn-sm" onclick="pAnswered()">🖨️ Print</button>
+  </div>
+  <div id="answered-container"></div>
 </div>
 
 <!-- ══════ PRINT ZONE (only this renders on print) ══════ -->
@@ -442,19 +492,19 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:#1a2
 //  MASTER DATA
 // ════════════════════════════════
 const CHURCHES=[
-  {id:"abundance",    name:"Abundance Church",           pastor:"Ptr. Justin Flores & Sis. Alma",          sub:true },
-  {id:"agape",        name:"Agape Church",                pastor:"Pastor Mike Jacinto / Sis. Irene",        sub:false},
-  {id:"botr_sun",     name:"BOTR Sunday",                 pastor:"Ptr. Ver Monastrial / Sis. Dianne",       sub:false},
-  {id:"shekinah",     name:"Shekinah Church",             pastor:"Pastor Michelle Lomboy / Bro. Resty",     sub:false},
-  {id:"harvesters",   name:"Harvesters Church",           pastor:"Ptra. Verna & Tito De Jesus",             sub:false},
-  {id:"vc_botr",      name:"VC / BOTR PM",                pastor:"Pastor Anson",                            sub:false},
-  {id:"jao",          name:"Jesus Alpha & Omega (JAOC)",  pastor:"Pastor Elinor Chee / Bro. Charlie",       sub:false},
-  {id:"cornerstone",  name:"Cornerstone Church",          pastor:"Ptra. Louella Calisagan / Bro. Joey",     sub:false},
-  {id:"mtcc",         name:"MTCC",                        pastor:"Ptr. Oscar",                              sub:false},
-  {id:"flcc",         name:"FLCC-Kuwait / Virtual",       pastor:"Network Leadership",                      sub:false},
-  {id:"fruitbearers", name:"Fruitbearers Church (FB)",    pastor:"LP Jopet Alim & Ptr. Froilan Quitoriano", sub:false},
-  {id:"faithful",     name:"Faithful & True (F&T)",       pastor:"Pastor Rodel Comayingking / Sis. Precy",  sub:false},
-  {id:"godisnlove",   name:"God Is Love (GIL)",           pastor:"Ptra. Catherine Calzita",                 sub:false}
+  {id:"abundance",    name:"Abundance Church",           pastor:"Ptr. Justin Flores & Sis. Alma",          coordinator:"Bro. Wilson Guerzon",     sub:true },
+  {id:"agape",        name:"Agape Church",                pastor:"Pastor Mike Jacinto / Sis. Irene",        coordinator:"",                        sub:false},
+  {id:"botr_sun",     name:"BOTR Sunday",                 pastor:"Ptr. Ver Monastrial / Sis. Dianne",       coordinator:"",                        sub:false},
+  {id:"shekinah",     name:"Shekinah Church",             pastor:"Pastor Michelle Lomboy / Bro. Resty",     coordinator:"",                        sub:false},
+  {id:"harvesters",   name:"Harvesters Church",           pastor:"Ptra. Verna & Tito De Jesus",             coordinator:"",                        sub:false},
+  {id:"vc_botr",      name:"VC / BOTR PM",                pastor:"Pastor Anson",                            coordinator:"",                        sub:false},
+  {id:"jao",          name:"Jesus Alpha & Omega (JAOC)",  pastor:"Pastor Elinor Chee / Bro. Charlie",       coordinator:"",                        sub:false},
+  {id:"cornerstone",  name:"Cornerstone Church",          pastor:"Ptra. Louella Calisagan / Bro. Joey",     coordinator:"",                        sub:false},
+  {id:"mtcc",         name:"MTCC",                        pastor:"Ptr. Oscar",                              coordinator:"",                        sub:false},
+  {id:"flcc",         name:"FLCC-Kuwait / Virtual",       pastor:"Network Leadership",                      coordinator:"",                        sub:false},
+  {id:"fruitbearers", name:"Fruitbearers Church (FB)",    pastor:"LP Jopet Alim & Ptr. Froilan Quitoriano", coordinator:"",                        sub:false},
+  {id:"faithful",     name:"Faithful & True (F&T)",       pastor:"Pastor Rodel Comayingking / Sis. Precy",  coordinator:"",                        sub:false},
+  {id:"godisnlove",   name:"God Is Love (GIL)",           pastor:"Ptra. Catherine Calzita",                 coordinator:"",                        sub:false}
 ];
 
 const CAT={
@@ -672,8 +722,22 @@ function sw(id,btn){
   if(id==='lists')renderLists();
   if(id==='rooms')renderRooms();
   if(id==='cpm')renderCpmSched();
-  if(id==='intercessory')renderIntSched();
-  if(id==='devotion')renderDevSched();
+  if(id==='answered')renderAnswered();
+  if(id==='unanswered')renderUnanswered();
+  if(id==='duplicates')renderDuplicates();
+}
+function swSub(id,btn){
+  ['cpm','int','dev'].forEach(function(s){
+    var sp=document.getElementById('subpanel-'+s);
+    var tb=document.getElementById('stab-'+s);
+    if(sp)sp.style.display='none';
+    if(tb)tb.classList.remove('on');
+  });
+  document.getElementById('subpanel-'+id).style.display='block';
+  btn.classList.add('on');
+  if(id==='cpm')renderCpmSched();
+  if(id==='int')renderIntSched();
+  if(id==='dev')renderDevSched();
 }
 
 // ════════════════════════════════
@@ -691,8 +755,12 @@ function renderOverview(){
     const cnt=PRAYERS.filter(p=>p.church===c.id).length;
     const room=roomMap[c.id]?`<span class="badge b-room">Room ${roomMap[c.id]}</span>`:`<span style="color:var(--muted);font-size:12px;">—</span>`;
     const tr=document.createElement('tr');
+    const coord=c.coordinator
+      ?`<span style="font-weight:600;color:var(--navy);">${c.coordinator}</span>`
+      :`<span style="color:var(--muted);font-size:12px;">—</span>`;
     tr.innerHTML=`<td style="font-weight:700;">${c.name}</td>
       <td style="color:var(--muted);font-size:12px;">${c.pastor}</td>
+      <td style="font-size:13px;">${coord}</td>
       <td><span class="badge ${c.sub?'b-ok':'b-wait'}">${c.sub?'✅ Submitted':'⏳ Pending'}</span></td>
       <td>${cnt||'—'}</td><td>${room}</td>
       <td><button class="btn btn-ghost btn-sm" onclick="togSub('${c.id}')">${c.sub?'Unmark':'Mark Received'}</button></td>`;
@@ -1223,6 +1291,231 @@ function initRows(){
   addTR('fi-church','church');addNR('fi-personal','personal');addNR('fi-healing','healing');
   addNR('fi-salvation','salvation');addNR('fi-financial','financial');addNR('fi-thanksgiving','thanksgiving');
   addTR('fi-israel','israel');addTR('fi-world','world');addTR('fi-kuwait','kuwait');addTR('fi-philippines','philippines');
+}
+
+// ════════════════════════════════
+//  UNANSWERED PRAYERS
+// ════════════════════════════════
+function renderUnanswered(){
+  var container=document.getElementById('unanswered-container');
+  var churches=CHURCHES.filter(function(c){return c.sub;});
+  if(!churches.length){container.innerHTML='<div class="empty">No submitted prayer lists yet.</div>';return;}
+  var totalCount=0;var churchCount=0;var html='';
+  churches.forEach(function(c){
+    // Active requests: not thanksgiving, no update yet
+    var items=PRAYERS.filter(function(p){
+      return p.church===c.id&&p.cat!=='thanksgiving'&&(!p.update||!p.update.trim());
+    });
+    if(!items.length)return;
+    totalCount+=items.length;churchCount++;
+    html+='<div class="card" style="margin-bottom:20px;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);">'
+      +'<div style="background:#1a3560;padding:13px 16px;display:flex;align-items:center;gap:10px;">'
+      +'<div style="flex:1;">'
+      +'<div style="font-size:15px;font-weight:800;color:#fff;">'+c.name+'</div>'
+      +'<div style="font-size:12px;color:rgba(255,255,255,.68);margin-top:3px;">'+c.pastor+'</div>'
+      +'</div>'
+      +'<span style="background:rgba(255,255,255,.15);color:#fff;font-size:12px;padding:3px 10px;border-radius:10px;">'+items.length+' requests</span>'
+      +'</div>'
+      +'<div style="padding:4px 0 14px;">';
+    CORD.forEach(function(ct){
+      if(ct==='thanksgiving')return;
+      var rows=items.filter(function(p){return p.cat===ct;});
+      if(!rows.length)return;
+      html+='<div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin:14px 14px 6px;">'+CAT[ct].label+'</div>';
+      if(ct==='ministry'){
+        MINS.forEach(function(m){
+          var mi=rows.filter(function(r){return r.ministry===m.id;});if(!mi.length)return;
+          html+='<div style="font-size:11px;background:#e4eefa;color:#1a3560;padding:1px 8px;border-radius:4px;display:inline-block;margin:2px 14px 4px;">'+m.id+'</div>';
+          mi.forEach(function(r,i){
+            html+='<div class="pr" style="padding:5px 14px;"><span class="pr-n">'+(i+1)+'.</span><div class="pr-body">'+r.request+'</div></div>';
+          });
+        });
+      } else {
+        rows.forEach(function(r,i){
+          var nm=r.name?'<span class="pr-name">'+r.name+'</span> — ':'';
+          html+='<div class="pr" style="padding:5px 14px;"><span class="pr-n">'+(i+1)+'.</span><div class="pr-body">'+nm+r.request+'</div></div>';
+        });
+      }
+    });
+    html+='</div></div>';
+  });
+  if(!html){
+    container.innerHTML='<div class="empty" style="padding:40px 24px;">'
+      +'<div style="font-size:28px;margin-bottom:10px;">🎉</div>'
+      +'<div style="font-weight:700;color:var(--green);margin-bottom:6px;">All prayers have been answered!</div>'
+      +'<div style="font-size:12px;color:var(--muted);">No pending requests without updates found.</div>'
+      +'</div>';
+    return;
+  }
+  var summary='<div style="background:var(--abg);border:1px solid #ffd070;border-radius:var(--r);'
+    +'padding:13px 16px;margin-bottom:18px;display:flex;align-items:center;gap:12px;">'
+    +'<span style="font-size:28px;">⏳</span>'
+    +'<div><div style="font-weight:800;color:var(--amber);font-size:15px;">'+totalCount+' Active Prayer Request'+(totalCount!==1?'s':'')+'</div>'
+    +'<div style="font-size:12px;color:var(--muted);margin-top:2px;">Across '+churchCount+' church'+(churchCount!==1?'es':'')+' — still awaiting God\'s answer</div>'
+    +'</div></div>';
+  container.innerHTML=summary+html;
+}
+function pUnanswered(){
+  var churches=CHURCHES.filter(function(c){return c.sub;});
+  var hasSome=churches.some(function(c){
+    return PRAYERS.some(function(p){return p.church===c.id&&p.cat!=='thanksgiving'&&(!p.update||!p.update.trim());});
+  });
+  if(!hasSome){alert('No unanswered prayers to print.');return;}
+  var h='<h2>FLCC Corporate Prayer Meeting — Active Prayer Requests</h2>'
+    +'<p style="font-size:12px;color:#666;margin-bottom:16px;">Printed: '+new Date().toLocaleDateString()+'</p>';
+  churches.forEach(function(c){
+    var items=PRAYERS.filter(function(p){return p.church===c.id&&p.cat!=='thanksgiving'&&(!p.update||!p.update.trim());});
+    if(!items.length)return;
+    h+=buildBlock(c,items);
+  });
+  doPrint(h);
+}
+
+// ════════════════════════════════
+//  DUPLICATE PRAYERS
+// ════════════════════════════════
+function renderDuplicates(){
+  var container=document.getElementById('duplicates-container');
+  // Build map of name|cat → array of prayer items
+  var m={};
+  PRAYERS.forEach(function(p){
+    if(!p.name||!p.name.trim())return;
+    var k=p.name.trim().toLowerCase()+'|'+p.cat;
+    if(!m[k])m[k]=[];
+    m[k].push(p);
+  });
+  // Keep only those appearing in more than one church
+  var dups=Object.entries(m).filter(function(entry){
+    var churches=new Set(entry[1].map(function(p){return p.church;}));
+    return churches.size>1;
+  });
+  if(!dups.length){
+    container.innerHTML='<div class="empty" style="padding:40px 24px;">'
+      +'<div style="font-size:28px;margin-bottom:10px;">✅</div>'
+      +'<div style="font-weight:700;color:var(--green);margin-bottom:6px;">No duplicates found</div>'
+      +'<div style="font-size:12px;color:var(--muted);">All prayer requests appear to be unique across churches.</div>'
+      +'</div>';
+    return;
+  }
+  var summary='<div style="background:var(--redbg);border:1px solid #f5b7b1;border-radius:var(--r);'
+    +'padding:13px 16px;margin-bottom:18px;display:flex;align-items:center;gap:12px;">'
+    +'<span style="font-size:28px;">🔁</span>'
+    +'<div><div style="font-weight:800;color:#c0392b;font-size:15px;">'+dups.length+' Duplicate'+(dups.length!==1?'s':'')+' Detected</div>'
+    +'<div style="font-size:12px;color:var(--muted);margin-top:2px;">Same person or concern submitted by multiple churches — coordinate before the meeting</div>'
+    +'</div></div>';
+  var html='';
+  dups.forEach(function(entry){
+    var key=entry[0];var prayers=entry[1];
+    var parts=key.split('|');
+    var displayName=prayers[0].name;
+    var catLabel=CAT[parts[1]]?CAT[parts[1]].label:parts[1];
+    var churchesInvolved=Array.from(new Set(prayers.map(function(p){return p.church;})));
+    html+='<div class="card" style="margin-bottom:16px;border:1px solid #f5b7b1;border-radius:var(--r);overflow:hidden;">'
+      +'<div style="background:#fdecea;padding:11px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">'
+      +'<div style="flex:1;">'
+      +'<span style="font-size:14px;font-weight:800;color:#c0392b;">'+displayName+'</span>'
+      +'<span style="font-size:11px;background:#fff;border:1px solid #f5b7b1;color:#c0392b;padding:1px 8px;border-radius:8px;margin-left:8px;">'+catLabel+'</span>'
+      +'</div>'
+      +'<span style="font-size:12px;color:#c0392b;font-weight:600;">'+churchesInvolved.length+' churches</span>'
+      +'</div>'
+      +'<div style="padding:12px 16px;">';
+    churchesInvolved.forEach(function(cid){
+      var c=ch(cid);
+      var cPrayers=prayers.filter(function(p){return p.church===cid;});
+      html+='<div style="margin-bottom:10px;padding:10px 12px;background:var(--bg);border-radius:6px;border-left:3px solid var(--navy);">'
+        +'<div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:6px;">'+( c?c.name:cid)+'</div>';
+      cPrayers.forEach(function(r){
+        var up=r.update?'<span style="background:var(--gbg);color:var(--green);font-size:11px;padding:1px 7px;border-radius:8px;margin-left:6px;">'+r.update+'</span>':'';
+        html+='<div style="font-size:13px;color:#1a2340;line-height:1.5;">'+r.request+up+'</div>';
+      });
+      html+='</div>';
+    });
+    html+='</div></div>';
+  });
+  container.innerHTML=summary+html;
+}
+
+// ════════════════════════════════
+//  ANSWERED PRAYERS
+// ════════════════════════════════
+function answeredItems(cid){
+  // Thanksgiving category + any other category with a non-empty update
+  return PRAYERS.filter(function(p){
+    if(p.church!==cid)return false;
+    return p.cat==='thanksgiving'||(p.update&&p.update.trim());
+  });
+}
+function renderAnswered(){
+  var container=document.getElementById('answered-container');
+  var churches=CHURCHES.filter(function(c){return c.sub;});
+  if(!churches.length){container.innerHTML='<div class="empty">No submitted prayer lists yet.</div>';return;}
+  var totalCount=0;
+  var churchCount=0;
+  var html='';
+  churches.forEach(function(c){
+    var thanks=PRAYERS.filter(function(p){return p.church===c.id&&p.cat==='thanksgiving';});
+    var updates=PRAYERS.filter(function(p){return p.church===c.id&&p.cat!=='thanksgiving'&&p.update&&p.update.trim();});
+    if(!thanks.length&&!updates.length)return;
+    totalCount+=thanks.length+updates.length;
+    churchCount++;
+    html+='<div class="card" style="margin-bottom:20px;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);">'
+      +'<div style="background:#1e7a3c;padding:13px 16px;">'
+      +'<div style="font-size:15px;font-weight:800;color:#fff;">'+c.name+'</div>'
+      +'<div style="font-size:12px;color:rgba(255,255,255,.7);margin-top:3px;">'+c.pastor+'</div>'
+      +'</div>'
+      +'<div style="padding:4px 0 14px;">';
+    if(thanks.length){
+      html+='<div style="font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;'
+        +'letter-spacing:.5px;margin:14px 14px 8px;">Thanksgiving & Praise Reports</div>';
+      thanks.forEach(function(r,i){
+        var nm=r.name?'<span class="pr-name">'+r.name+'</span> — ':'';
+        var up=r.update?'<span style="background:var(--gbg);color:var(--green);font-size:11px;padding:1px 7px;border-radius:8px;margin-left:4px;">'+r.update+'</span>':'';
+        html+='<div class="pr" style="padding:5px 14px;"><span class="pr-n">'+(i+1)+'.</span>'
+          +'<div class="pr-body">'+nm+r.request+up+'</div></div>';
+      });
+    }
+    if(updates.length){
+      html+='<div style="font-size:11px;font-weight:700;color:var(--navy);text-transform:uppercase;'
+        +'letter-spacing:.5px;margin:14px 14px 8px;padding-top:10px;border-top:1px solid var(--border);">Prayer Updates & Answers</div>';
+      updates.forEach(function(r,i){
+        var nm=r.name?'<span class="pr-name">'+r.name+'</span> — ':'';
+        var cat='<span style="font-size:10px;background:#f0f2f8;color:var(--muted);padding:1px 6px;border-radius:4px;margin-right:6px;">'+CAT[r.cat].label+'</span>';
+        html+='<div class="pr" style="padding:5px 14px;"><span class="pr-n">'+(i+1)+'.</span>'
+          +'<div class="pr-body">'+cat+nm+r.request
+          +'<br><span style="background:var(--gbg);color:var(--green);font-size:11px;padding:1px 7px;border-radius:8px;display:inline-block;margin-top:4px;">'+r.update+'</span>'
+          +'</div></div>';
+      });
+    }
+    html+='</div></div>';
+  });
+  if(!html){
+    container.innerHTML='<div class="empty" style="padding:40px 24px;">'
+      +'<div style="font-size:28px;margin-bottom:10px;">🙌</div>'
+      +'<div style="font-weight:700;color:var(--navy);margin-bottom:6px;">No answered prayers recorded yet</div>'
+      +'<div style="font-size:12px;color:var(--muted);">Thanksgiving items and prayer updates will appear here once churches submit.</div>'
+      +'</div>';
+    return;
+  }
+  var summary='<div style="background:var(--gbg);border:1px solid #b2dfbb;border-radius:var(--r);'
+    +'padding:13px 16px;margin-bottom:18px;display:flex;align-items:center;gap:12px;">'
+    +'<span style="font-size:28px;">🙌</span>'
+    +'<div><div style="font-weight:800;color:var(--green);font-size:15px;">'+totalCount+' Answered Prayer'+(totalCount!==1?'s / Praise Report':' / Praise Report')+'</div>'
+    +'<div style="font-size:12px;color:var(--muted);margin-top:2px;">Across '+churchCount+' church'+(churchCount!==1?'es':'')+'</div>'
+    +'</div></div>';
+  container.innerHTML=summary+html;
+}
+function pAnswered(){
+  var churches=CHURCHES.filter(function(c){return c.sub;});
+  var hasSome=churches.some(function(c){return answeredItems(c.id).length>0;});
+  if(!hasSome){alert('No answered prayers to print yet.');return;}
+  var h='<h2>FLCC Corporate Prayer Meeting — Answered Prayers & Praise Reports</h2>'
+    +'<p style="font-size:12px;color:#666;margin-bottom:16px;">Printed: '+new Date().toLocaleDateString()+'</p>';
+  churches.forEach(function(c){
+    var items=answeredItems(c.id);
+    if(!items.length)return;
+    h+=buildBlock(c,items);
+  });
+  doPrint(h);
 }
 
 // ════════════════════════════════
