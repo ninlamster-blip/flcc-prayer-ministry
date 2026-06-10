@@ -232,7 +232,8 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:#1a2
 <body>
 
 <!-- HEADER -->
-<header class="hdr">
+<div id="top-bar" style="position:sticky;top:0;z-index:200;">
+  <header class="hdr">
   <div>
     <h1>FLCC – Corporate Prayer Meeting Dashboard</h1>
     <p style="margin-top:3px;">Filipino Language Christian Congregation · Kuwait Network</p>
@@ -270,6 +271,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:#1a2
   <button class="tab"     onclick="sw('unanswered',this)"> Unanswered Prayers</button>
   <button class="tab"     onclick="sw('duplicates',this)"> Duplicates</button>
 </nav>
+</div>
 
 <!-- ══════ OVERVIEW ══════ -->
 <div class="panel on" id="panel-overview">
@@ -408,12 +410,15 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:#1a2
       </div>
       <div class="post-sub" id="post-sub">
         <h4>Submitted successfully!</h4>
-        <p class="tip" style="margin-bottom:10px;">Send the exported file to Ptr. Doddie Arciaga / Sis. Zen Alim for upload to the dashboard.</p>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <p class="tip" style="margin-bottom:10px;">Your prayer list has been saved to the dashboard. Send the exported file to Ptr. Doddie Arciaga / Sis. Zen Alim for upload.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
           <button class="btn btn-navy btn-sm" onclick="exportSubmission()"> Export as File (send to coordinator)</button>
           <button class="btn btn-green btn-sm" onclick="pLastSubmitted()"> Print My List</button>
           <button class="btn btn-gold btn-sm" onclick="cpLastMsg()"> Copy for Messenger</button>
         </div>
+        <hr style="border:none;border-top:1px solid #b2dfbb;margin:10px 0;">
+        <p class="tip" style="margin-bottom:8px;">Ready to submit for another church or next month's CPM?</p>
+        <button class="btn btn-ghost btn-sm" onclick="startNewSubmission()">Start New Submission</button>
       </div>
     </div>
   </div>
@@ -1276,8 +1281,11 @@ function finalizeSub(cid,entries){
   const c=ch(cid);if(c)c.sub=true;
   lastCid=cid;
   document.getElementById('dup-warn').style.display='none';
-  document.getElementById('post-sub').style.display='block';
-  resetForm(true);renderOverview();
+  resetForm(true);
+  const ps=document.getElementById('post-sub');
+  ps.style.display='block';
+  ps.scrollIntoView({behavior:'smooth',block:'nearest'});
+  renderOverview();
 }
 function resetForm(keep=false){
   document.getElementById('f-ch').value='';document.getElementById('f-by').value='';
@@ -1286,6 +1294,12 @@ function resetForm(keep=false){
   buildMinForm();document.getElementById('dup-warn').style.display='none';
   if(!keep)document.getElementById('post-sub').style.display='none';
   initRows();
+}
+function startNewSubmission(){
+  document.getElementById('post-sub').style.display='none';
+  document.getElementById('dup-warn').style.display='none';
+  const panel=document.getElementById('panel-submit');
+  if(panel)panel.scrollIntoView({behavior:'smooth',block:'start'});
 }
 function initRows(){
   addTR('fi-church','church');addNR('fi-personal','personal');addNR('fi-healing','healing');
