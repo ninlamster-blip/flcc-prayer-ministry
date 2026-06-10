@@ -6,12 +6,12 @@
 <title>FLCC – Corporate Prayer Meeting</title>
 <style>
 :root{
-  --navy:#1a3560;--gold:#c9a030;--bg:#f5f7fb;--white:#fff;
-  --border:#dde3ef;--muted:#6b7a9a;
+  --navy:#8c4a35;--gold:#c4956a;--bg:#fdf6f0;--white:#fff;
+  --border:#e8d5cc;--muted:#9a6b5a;
   --green:#1e7a3c;--gbg:#e8f5ec;
   --amber:#7a5500;--abg:#fff7e0;
   --redbg:#fdecea;--bluebg:#e4eefa;--purplebg:#f0ebff;--tealbg:#e0f4f1;
-  --r:8px;--sh:0 1px 6px rgba(26,53,96,.10);
+  --r:8px;--sh:0 1px 6px rgba(140,74,53,.10);
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:#1a2340;font-size:14px;}
@@ -21,7 +21,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:#1a2
 .hdr h1{font-size:17px;font-weight:700;}
 .hdr p{font-size:11px;opacity:.72;margin-top:2px;}
 /* COUNTDOWN */
-.cpm-bar{background:linear-gradient(90deg,#162d50,#1e4080);color:#fff;padding:8px 22px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:13px;}
+.cpm-bar{background:linear-gradient(90deg,#6b3120,#8c4a35);color:#fff;padding:8px 22px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:13px;}
 .cpm-label{opacity:.75;}
 .cpm-date{font-weight:700;color:#ffd970;}
 .countdown{display:flex;gap:6px;margin-left:auto;}
@@ -164,14 +164,14 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:#1a2
     display:flex;justify-content:space-between;align-items:center;
     print-color-adjust:exact;-webkit-print-color-adjust:exact;
   }
-  .print-page-footer .ppf-lead{font-weight:700;color:#1a3560;}
+  .print-page-footer .ppf-lead{font-weight:700;color:#8c4a35;}
 
   #print-zone{display:block!important;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px;color:#000;padding:16px 16px 32px;}
-  #print-zone h2{font-size:15px;color:#1a3560;margin-bottom:8px;}
+  #print-zone h2{font-size:15px;color:#8c4a35;margin-bottom:8px;}
 
   /* ── ROOM HEADER (highlighted navy banner) ── */
   #print-zone .room-hdr{
-    background:#1a3560!important;color:#fff!important;
+    background:#8c4a35!important;color:#fff!important;
     padding:10px 16px;font-size:17px;font-weight:900;
     letter-spacing:1.5px;text-transform:uppercase;
     margin:0 0 14px;border-radius:4px;
@@ -181,7 +181,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:#1a2
 
   /* ── CHURCH NAME (dark navy bar) ── */
   #print-zone .church-hdr{
-    background:#1a3560!important;color:#fff!important;
+    background:#8c4a35!important;color:#fff!important;
     padding:9px 14px;margin-bottom:0;
     print-color-adjust:exact;-webkit-print-color-adjust:exact;
   }
@@ -194,7 +194,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:#1a2
   /* ── CATEGORY SECTION — double-spaced ── */
   #print-zone .sec-lbl{
     font-weight:700;font-size:12px;
-    color:#1a3560;
+    color:#8c4a35;
     margin:18px 14px 6px;   /* tall top gap = double space between categories */
     padding-top:12px;
     border-top:1px solid #e0e4ef;
@@ -219,11 +219,11 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:#1a2
   #print-zone .pr{page-break-inside:avoid;}
 
   /* ── MINISTRY TAGS ── */
-  #print-zone .mtag{display:inline-block;font-size:11px;padding:1px 6px;border-radius:4px;background:#e4eefa;color:#1a3560;margin:6px 14px 4px;}
+  #print-zone .mtag{display:inline-block;font-size:11px;padding:1px 6px;border-radius:4px;background:#e4eefa;color:#8c4a35;margin:6px 14px 4px;}
 
   /* ── SCHEDULES ── */
   #print-zone .psched{border-collapse:collapse;width:100%;font-size:12px;}
-  #print-zone .psched th{background:#1a3560!important;color:#fff!important;padding:7px 10px;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+  #print-zone .psched th{background:#8c4a35!important;color:#fff!important;padding:7px 10px;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
   #print-zone .psched td{padding:7px 10px;border:1px solid #ccc;}
   #print-zone .psched .sh-date{background:#f5d5c0!important;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
 }
@@ -261,14 +261,14 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:#1a2
 
 <!-- TABS -->
 <nav class="tabs">
-  <button class="tab on"  onclick="sw('overview',this)">📊 Overview</button>
-  <button class="tab"     onclick="sw('lists',this)">🙏 Prayer Lists</button>
-  <button class="tab"     onclick="sw('rooms',this)">🖥️ Zoom Rooms</button>
-  <button class="tab"     onclick="sw('submit',this)">📋 Submit Form</button>
-  <button class="tab"     onclick="sw('cpm',this)">📅 Schedules</button>
-  <button class="tab"     onclick="sw('answered',this)">🙌 Answered Prayers</button>
-  <button class="tab"     onclick="sw('unanswered',this)">⏳ Unanswered Prayers</button>
-  <button class="tab"     onclick="sw('duplicates',this)">🔁 Duplicates</button>
+  <button class="tab on"  onclick="sw('overview',this)"> Overview</button>
+  <button class="tab"     onclick="sw('lists',this)"> Prayer Lists</button>
+  <button class="tab"     onclick="sw('rooms',this)"> Zoom Rooms</button>
+  <button class="tab"     onclick="sw('submit',this)"> Submit Form</button>
+  <button class="tab"     onclick="sw('cpm',this)"> Schedules</button>
+  <button class="tab"     onclick="sw('answered',this)"> Answered Prayers</button>
+  <button class="tab"     onclick="sw('unanswered',this)"> Unanswered Prayers</button>
+  <button class="tab"     onclick="sw('duplicates',this)"> Duplicates</button>
 </nav>
 
 <!-- ══════ OVERVIEW ══════ -->
@@ -305,9 +305,9 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:#1a2
     <div class="card-head">
       <h3>Church Submission Tracker</h3>
       <div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;">
-        <button class="btn btn-ghost btn-sm" onclick="importSubmission()">📥 Import Submission</button>
-        <button class="btn btn-navy btn-sm" onclick="pAll()">🖨️ Print All Received</button>
-        <button class="btn btn-ghost btn-sm" onclick="cpAllMsg()">📲 Copy All for Messenger</button>
+        <button class="btn btn-ghost btn-sm" onclick="importSubmission()"> Import Submission</button>
+        <button class="btn btn-navy btn-sm" onclick="pAll()"> Print All Received</button>
+        <button class="btn btn-ghost btn-sm" onclick="cpAllMsg()"> Copy All for Messenger</button>
       </div>
     </div>
     <div style="overflow-x:auto;">
@@ -321,7 +321,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:#1a2
 <!-- ══════ PRAYER LISTS ══════ -->
 <div class="panel" id="panel-lists">
   <div class="sbar">
-    <input type="text" id="ls-q" placeholder="🔍  Search…" oninput="renderLists()">
+    <input type="text" id="ls-q" placeholder="  Search…" oninput="renderLists()">
     <select id="ls-ch" onchange="renderLists()"><option value="">All Churches</option></select>
     <select id="ls-cat" onchange="renderLists()">
       <option value="">All Sections</option>
@@ -337,7 +337,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:#1a2
       <option value="kuwait">10 · Kuwait Concerns</option>
       <option value="philippines">11 · Philippines Concerns</option>
     </select>
-    <button class="btn btn-ghost btn-sm" onclick="pLists()">🖨️ Print View</button>
+    <button class="btn btn-ghost btn-sm" onclick="pLists()"> Print View</button>
   </div>
   <div id="lists-container"></div>
 </div>
@@ -346,12 +346,12 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:#1a2
 <div class="panel" id="panel-rooms">
   <p class="tip">Assign submitted churches to rooms for this CPM cycle. Rooms are always fresh each meeting — nothing is permanent.</p>
   <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
-    <button class="btn btn-navy" onclick="pRooms()">🖨️ Print Prayer Lists</button>
+    <button class="btn btn-navy" onclick="pRooms()"> Print Prayer Lists</button>
     <span style="font-size:12px;color:var(--muted);align-self:center;">Room assignments are for coordination only — not shown on printed lists.</span>
-    <button class="btn btn-ghost" style="margin-left:auto;" onclick="clearRooms()">✖ Clear All Assignments</button>
+    <button class="btn btn-ghost" style="margin-left:auto;" onclick="clearRooms()">× Clear All Assignments</button>
   </div>
   <div class="card" style="margin-bottom:16px;">
-    <div class="card-head"><h3>⏳ Unassigned Churches</h3></div>
+    <div class="card-head"><h3> Unassigned Churches</h3></div>
     <div class="card-body" id="unassigned-body"></div>
   </div>
   <div class="rooms-grid" id="room-cols"></div>
@@ -360,7 +360,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:#1a2
 <!-- ══════ SUBMIT FORM ══════ -->
 <div class="panel" id="panel-submit">
   <div class="card" style="max-width:780px;">
-    <div class="card-head"><span>📋</span><h3>Prayer Request Submission — Sections 1–11</h3></div>
+    <div class="card-head"><span></span><h3>Prayer Request Submission — Sections 1–11</h3></div>
     <div class="card-body">
       <p class="tip">Complete all sections that apply. Submit by <strong>Monday</strong> of CPM week.</p>
       <div class="frow">
@@ -402,17 +402,17 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:#1a2
           <button class="btn btn-ghost btn-sm" onclick="addTR('fi-philippines','philippines')" style="margin-top:6px;">+ Add</button></div></div>
       <div class="warn" id="dup-warn"></div>
       <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;">
-        <button class="btn btn-navy" onclick="doSubmit()">✅ Submit to Dashboard</button>
-        <button class="btn btn-ghost" onclick="previewPrint()">🖨️ Preview & Print</button>
-        <button class="btn btn-ghost" onclick="resetForm()">🔄 Clear</button>
+        <button class="btn btn-navy" onclick="doSubmit()"> Submit to Dashboard</button>
+        <button class="btn btn-ghost" onclick="previewPrint()"> Preview & Print</button>
+        <button class="btn btn-ghost" onclick="resetForm()"> Clear</button>
       </div>
       <div class="post-sub" id="post-sub">
         <h4>Submitted successfully!</h4>
         <p class="tip" style="margin-bottom:10px;">Send the exported file to Ptr. Doddie Arciaga / Sis. Zen Alim for upload to the dashboard.</p>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button class="btn btn-navy btn-sm" onclick="exportSubmission()">📥 Export as File (send to coordinator)</button>
-          <button class="btn btn-green btn-sm" onclick="pLastSubmitted()">🖨️ Print My List</button>
-          <button class="btn btn-gold btn-sm" onclick="cpLastMsg()">📲 Copy for Messenger</button>
+          <button class="btn btn-navy btn-sm" onclick="exportSubmission()"> Export as File (send to coordinator)</button>
+          <button class="btn btn-green btn-sm" onclick="pLastSubmitted()"> Print My List</button>
+          <button class="btn btn-gold btn-sm" onclick="cpLastMsg()"> Copy for Messenger</button>
         </div>
       </div>
     </div>
@@ -422,25 +422,25 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:#1a2
 <!-- ══════ SCHEDULES (CPM + Intercessory + Workers) ══════ -->
 <div class="panel" id="panel-cpm">
   <div style="display:flex;border-bottom:2px solid var(--border);margin-bottom:16px;overflow-x:auto;">
-    <button class="stab on" id="stab-cpm" onclick="swSub('cpm',this)">📅 CPM Schedule</button>
-    <button class="stab" id="stab-int" onclick="swSub('int',this)">🙏 Intercessory Prayer</button>
-    <button class="stab" id="stab-dev" onclick="swSub('dev',this)">👷 Workers Devotion</button>
+    <button class="stab on" id="stab-cpm" onclick="swSub('cpm',this)"> CPM Schedule</button>
+    <button class="stab" id="stab-int" onclick="swSub('int',this)"> Intercessory Prayer</button>
+    <button class="stab" id="stab-dev" onclick="swSub('dev',this)"> Workers Devotion</button>
   </div>
   <div id="subpanel-cpm">
     <div class="card">
-      <div class="card-head"><span>📅</span><h3>Corporate Prayer 2026 — 2nd Wednesday · 6:30 PM</h3></div>
+      <div class="card-head"><span></span><h3>Corporate Prayer 2026 — 2nd Wednesday · 6:30 PM</h3></div>
       <div class="card-body"><div id="cpm-sched-grid"></div></div>
     </div>
   </div>
   <div id="subpanel-int" style="display:none;">
     <div class="card">
-      <div class="card-head"><span>🙏</span><h3>Intercessory Prayer 2026 — Every Friday</h3></div>
+      <div class="card-head"><span></span><h3>Intercessory Prayer 2026 — Every Friday</h3></div>
       <div class="card-body"><div id="int-sched-grid"></div></div>
     </div>
   </div>
   <div id="subpanel-dev" style="display:none;">
     <div class="card">
-      <div class="card-head"><span>👷</span><h3>All Workers Devotion 2026 — Fridays 9:20 AM</h3></div>
+      <div class="card-head"><span></span><h3>All Workers Devotion 2026 — Fridays 9:20 AM</h3></div>
       <div class="card-body">
         <p class="tip">Exhortation 5 minutes then Prayer time.</p>
         <div id="dev-sched-grid"></div>
@@ -456,7 +456,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:#1a2
       <h2 style="font-size:16px;font-weight:800;color:var(--navy);">Unanswered Prayers</h2>
       <p style="font-size:12px;color:var(--muted);margin-top:3px;">Active prayer requests still awaiting God's answer — church by church</p>
     </div>
-    <button class="btn btn-ghost btn-sm" onclick="pUnanswered()">🖨️ Print</button>
+    <button class="btn btn-ghost btn-sm" onclick="pUnanswered()"> Print</button>
   </div>
   <div id="unanswered-container"></div>
 </div>
@@ -479,7 +479,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:#1a2
       <h2 style="font-size:16px;font-weight:800;color:var(--navy);">Answered Prayers & Praise Reports</h2>
       <p style="font-size:12px;color:var(--muted);margin-top:3px;">Thanksgiving items and prayer updates — church by church</p>
     </div>
-    <button class="btn btn-ghost btn-sm" onclick="pAnswered()">🖨️ Print</button>
+    <button class="btn btn-ghost btn-sm" onclick="pAnswered()"> Print</button>
   </div>
   <div id="answered-container"></div>
 </div>
@@ -523,13 +523,13 @@ const CAT={
 const CORD=["church","ministry","personal","healing","salvation","financial","thanksgiving","israel","world","kuwait","philippines"];
 
 const MINS=[
-  {id:"Discipleship",  icon:"📖",cls:"mt-d"},
-  {id:"Evangelism",    icon:"🌍",cls:"mt-e"},
-  {id:"Worship",       icon:"🎵",cls:"mt-w"},
-  {id:"Fellowship",    icon:"🤝",cls:"mt-f"},
-  {id:"Finance",       icon:"💵",cls:"mt-fi"},
-  {id:"Prayer Ministry",icon:"🙏",cls:"mt-p"},
-  {id:"Follow-up Team",icon:"📞",cls:"mt-fu"}
+  {id:"Discipleship",  icon:"",cls:"mt-d"},
+  {id:"Evangelism",    icon:"",cls:"mt-e"},
+  {id:"Worship",       icon:"",cls:"mt-w"},
+  {id:"Fellowship",    icon:"",cls:"mt-f"},
+  {id:"Finance",       icon:"",cls:"mt-fi"},
+  {id:"Prayer Ministry",icon:"",cls:"mt-p"},
+  {id:"Follow-up Team",icon:"",cls:"mt-fu"}
 ];
 const MCLS=Object.fromEntries(MINS.map(m=>[m.id,m.cls]));
 const PTYPES=[{id:"personal",label:"Personal"},{id:"family",label:"Family"},{id:"growth",label:"Personal Growth"}];
@@ -556,12 +556,12 @@ let PRAYERS=[
   {id:9,church:"abundance",cat:"personal",subcat:"family", name:"Sis. Lorna",ministry:"", request:"Family situation needs peace and reconciliation — pray for God's hand to move.",update:""},
   {id:10,church:"abundance",cat:"personal",subcat:"growth", name:"Bro. Noel",ministry:"", request:"Pray for spiritual growth and consistency in his devotion life.",update:""},
   {id:11,church:"abundance",cat:"healing", subcat:"",name:"Bro. Edwin",ministry:"",   request:"Hypertension and diabetes — pray for healing and discipline in medication.",update:""},
-  {id:12,church:"abundance",cat:"healing", subcat:"",name:"Sis. Cora", ministry:"",   request:"Recovering from surgery — pray for full and speedy healing.",update:"Improving 🙏"},
+  {id:12,church:"abundance",cat:"healing", subcat:"",name:"Sis. Cora", ministry:"",   request:"Recovering from surgery — pray for full and speedy healing.",update:"Improving "},
   {id:13,church:"abundance",cat:"salvation",subcat:"",name:"Joel",ministry:"",        request:"Brother of Bro. Ricky — pray for salvation and softening of his heart.",update:""},
   {id:14,church:"abundance",cat:"salvation",subcat:"",name:"Parents of Sis. Lorna",ministry:"",request:"Pray for salvation of her parents.",update:""},
   {id:15,church:"abundance",cat:"financial",subcat:"",name:"Bro. Noel",ministry:"",   request:"Pray for financial provision for family needs in the Philippines.",update:""},
-  {id:16,church:"abundance",cat:"thanksgiving",subcat:"",name:"Sis. Marites",ministry:"",request:"Praise God — visa renewal approved after months of prayer!",update:"Answered! 🙌"},
-  {id:17,church:"abundance",cat:"thanksgiving",subcat:"",name:"Bro. Edwin",ministry:"",request:"Blood pressure stabilized on last check-up — praising God!",update:"Answered! 🙌"},
+  {id:16,church:"abundance",cat:"thanksgiving",subcat:"",name:"Sis. Marites",ministry:"",request:"Praise God — visa renewal approved after months of prayer!",update:"Answered! "},
+  {id:17,church:"abundance",cat:"thanksgiving",subcat:"",name:"Bro. Edwin",ministry:"",request:"Blood pressure stabilized on last check-up — praising God!",update:"Answered! "},
   {id:18,church:"abundance",cat:"israel",  subcat:"",name:"",ministry:"",request:"Pray for peace in Jerusalem and protection over God's people in Israel.",update:""},
   {id:19,church:"abundance",cat:"world",   subcat:"",name:"",ministry:"",request:"Pray for nations facing conflict, poverty, and natural disasters.",update:""},
   {id:20,church:"abundance",cat:"kuwait",  subcat:"",name:"",ministry:"",request:"Pray for the Filipino community in Kuwait — safety, employment, and open doors for ministry.",update:""},
@@ -761,7 +761,7 @@ function renderOverview(){
     tr.innerHTML=`<td style="font-weight:700;">${c.name}</td>
       <td style="color:var(--muted);font-size:12px;">${c.pastor}</td>
       <td style="font-size:13px;">${coord}</td>
-      <td><span class="badge ${c.sub?'b-ok':'b-wait'}">${c.sub?'✅ Submitted':'⏳ Pending'}</span></td>
+      <td><span class="badge ${c.sub?'b-ok':'b-wait'}">${c.sub?' Submitted':' Pending'}</span></td>
       <td>${cnt||'—'}</td><td>${room}</td>
       <td><button class="btn btn-ghost btn-sm" onclick="togSub('${c.id}')">${c.sub?'Unmark':'Mark Received'}</button></td>`;
     tb.appendChild(tr);
@@ -888,7 +888,7 @@ function pLastSubmitted(){
   if(!lastCid)return;
   const c=ch(lastCid);
   const items=PRAYERS.filter(p=>p.church===lastCid);
-  doPrint(`<h2>⛪ ${c?.name} — Prayer List</h2><p style="font-size:12px;color:#666;margin-bottom:12px;">${c?.pastor}</p>`+buildBlock(c,items));
+  doPrint(`<h2> ${c?.name} — Prayer List</h2><p style="font-size:12px;color:#666;margin-bottom:12px;">${c?.pastor}</p>`+buildBlock(c,items));
 }
 
 function previewPrint(){
@@ -898,7 +898,7 @@ function previewPrint(){
   const entries=collectForm().map(e=>({...e,church:cid,id:8000}));
   const combined=[...PRAYERS.filter(p=>p.church===cid),...entries];
   if(!combined.length){alert('Nothing to print yet.');return;}
-  doPrint(`<h2>⛪ ${c?.name} — Prayer List (Preview)</h2><p style="font-size:12px;color:#666;margin-bottom:12px;">${c?.pastor} · ${new Date().toLocaleDateString()}</p>`+buildBlock(c,combined));
+  doPrint(`<h2> ${c?.name} — Prayer List (Preview)</h2><p style="font-size:12px;color:#666;margin-bottom:12px;">${c?.pastor} · ${new Date().toLocaleDateString()}</p>`+buildBlock(c,combined));
 }
 
 // ════════════════════════════════
@@ -948,7 +948,7 @@ function pChurchByAbbrev(abbrev){
   if(!c||!c.sub){alert((c?c.name:abbrev)+' has not submitted a prayer list yet.');return;}
   const items=PRAYERS.filter(p=>p.church===cid);
   if(!items.length){alert('No prayer items found for this church.');return;}
-  doPrint(`<h2>⛪ ${c.name} — Prayer List</h2>`+
+  doPrint(`<h2> ${c.name} — Prayer List</h2>`+
     `<p style="font-size:12px;color:#666;margin-bottom:12px;">${c.pastor} · Printed: ${new Date().toLocaleDateString()}</p>`+
     buildBlock(c,items));
 }
@@ -972,13 +972,13 @@ function pSessionLists(abbrevArr){
 //  COPY FOR MESSENGER
 // ════════════════════════════════
 function buildMsgText(churches,prayers){
-  let t='🙏 FLCC CORPORATE PRAYER MEETING\n';
+  let t=' FLCC CORPORATE PRAYER MEETING\n';
   const cpm=nextCPM();
-  if(cpm)t+=`📅 Wednesday, ${MN[cpm.getMonth()]} ${cpm.getDate()}, ${cpm.getFullYear()} · 6:30 PM\n`;
+  if(cpm)t+=` Wednesday, ${MN[cpm.getMonth()]} ${cpm.getDate()}, ${cpm.getFullYear()} · 6:30 PM\n`;
   t+='━━━━━━━━━━━━━━━━━━━━━━━\n\n';
   churches.forEach(c=>{
     const items=prayers.filter(p=>p.church===c.id);if(!items.length)return;
-    t+=`⛪ ${c.name.toUpperCase()}\n${c.pastor}\n`;
+    t+=` ${c.name.toUpperCase()}\n${c.pastor}\n`;
     CORD.forEach(ct=>{
       const rows=items.filter(p=>p.cat===ct);if(!rows.length)return;
       t+=`\n${CAT[ct].icon} ${CAT[ct].label}\n`;
@@ -1000,12 +1000,12 @@ function buildMsgText(churches,prayers){
 }
 function cpAllMsg(){
   const t=buildMsgText(CHURCHES.filter(c=>c.sub),PRAYERS);
-  navigator.clipboard.writeText(t).then(()=>alert('✅ Copied! Paste into Messenger or WhatsApp.'));
+  navigator.clipboard.writeText(t).then(()=>alert(' Copied! Paste into Messenger or WhatsApp.'));
 }
 function cpLastMsg(){
   if(!lastCid)return;
   const t=buildMsgText([ch(lastCid)],PRAYERS);
-  navigator.clipboard.writeText(t).then(()=>alert('✅ Copied! Paste into Messenger.'));
+  navigator.clipboard.writeText(t).then(()=>alert(' Copied! Paste into Messenger.'));
 }
 
 // ════════════════════════════════
@@ -1032,7 +1032,7 @@ function renderLists(){
     const rn=roomMap[c.id];
     const roomBadge=rn?'<span style="background:#c9a030;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:4px;margin-left:8px;">Room '+rn+'</span>':'';
     html+='<div class="card" style="margin-bottom:20px;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);">'
-      +'<div style="background:#1a3560;padding:13px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">'
+      +'<div style="background:#8c4a35;padding:13px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">'
       +'<div style="flex:1;">'
       +'<div style="font-size:15px;font-weight:800;color:#fff;letter-spacing:.3px;">'+c.name+roomBadge+'</div>'
       +'<div style="font-size:12px;color:rgba(255,255,255,.68);margin-top:3px;">'+c.pastor+'</div>'
@@ -1105,7 +1105,7 @@ function renderRooms(){
         }).join('')
       :'<div class="empty" style="padding:12px;font-size:12px;">No churches assigned</div>';
     var printBtn=ir.length
-      ?'<button onclick="pRoom('+rn+')" style="margin-left:8px;background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:5px;padding:3px 9px;font-size:11px;font-weight:600;cursor:pointer;">🖨️ Print</button>'
+      ?'<button onclick="pRoom('+rn+')" style="margin-left:8px;background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:5px;padding:3px 9px;font-size:11px;font-weight:600;cursor:pointer;"> Print</button>'
       :'';
     return '<div class="room-col">'
       +'<div class="room-col-hdr">Room '+rn
@@ -1133,16 +1133,16 @@ function renderCpmSched(){
   const anySubmitted=allAbbrevs.some(function(a){const cid=CHURCH_ABBREV[a];return cid&&ch(cid)&&ch(cid).sub;});
   const allJson=JSON.stringify(allAbbrevs).replace(/"/g,'&quot;');
   let top='<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">'
-    +'<button class="btn btn-ghost btn-sm" onclick="pSched(\'cpm\')">🖨️ Print Schedule</button>'
-    +(anySubmitted?'<button class="btn btn-navy btn-sm" onclick="pSessionLists(JSON.parse(this.dataset.a))" data-a="'+allJson+'">🖨️ Print All Prayer Lists</button>':'')
+    +'<button class="btn btn-ghost btn-sm" onclick="pSched(\'cpm\')"> Print Schedule</button>'
+    +(anySubmitted?'<button class="btn btn-navy btn-sm" onclick="pSessionLists(JSON.parse(this.dataset.a))" data-a="'+allJson+'"> Print All Prayer Lists</button>':'')
     +'</div>';
   const cells=CPM_SCHED.map(function(e){
     const cur=isCurrentMonth(e.date);
     const cid=CHURCH_ABBREV[e.church];
     const hasSub=cid&&ch(cid)&&ch(cid).sub;
     const pb=hasSub
-      ?'<button class="btn btn-ghost btn-sm" style="padding:2px 7px;font-size:11px;margin-top:5px;display:block;" onclick="pChurchByAbbrev(\''+e.church+'\')">🖨️ Prayer List</button>'
-      :'<span style="font-size:10px;color:var(--muted);margin-top:4px;display:block;">⏳ Not yet submitted</span>';
+      ?'<button class="btn btn-ghost btn-sm" style="padding:2px 7px;font-size:11px;margin-top:5px;display:block;" onclick="pChurchByAbbrev(\''+e.church+'\')"> Prayer List</button>'
+      :'<span style="font-size:10px;color:var(--muted);margin-top:4px;display:block;"> Not yet submitted</span>';
     return '<div class="sched-cell'+(cur?' today':'')+'"><div class="sched-date">'+e.date+'</div><div class="sched-name">— '+e.church+'</div>'+pb+'</div>';
   }).join('');
   g.innerHTML=top+'<div class="sched-grid">'+cells+'</div>';
@@ -1150,7 +1150,7 @@ function renderCpmSched(){
 function renderDevSched(){
   const g=document.getElementById('dev-sched-grid');
   const printBtn=`<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
-    <button class="btn btn-ghost btn-sm" onclick="pSched('devotion')">🖨️ Print Schedule</button>
+    <button class="btn btn-ghost btn-sm" onclick="pSched('devotion')"> Print Schedule</button>
   </div>`;
   g.innerHTML=printBtn+'<div class="sched-grid">'+DEV_SCHED.map(e=>{
     const cur=isCurrentMonth(e.date);
@@ -1165,8 +1165,8 @@ function renderIntSched(){
   const anySubInt=allAbbrevsInt.some(function(a){const cid=CHURCH_ABBREV[a];return cid&&ch(cid)&&ch(cid).sub;});
   const allJsonInt=JSON.stringify(allAbbrevsInt).replace(/"/g,'&quot;');
   let top='<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">'
-    +'<button class="btn btn-ghost btn-sm" onclick="pSched(\'intercessory\')">🖨️ Print Schedule</button>'
-    +(anySubInt?'<button class="btn btn-navy btn-sm" onclick="pSessionLists(JSON.parse(this.dataset.a))" data-a="'+allJsonInt+'">🖨️ Print All Prayer Lists</button>':'')
+    +'<button class="btn btn-ghost btn-sm" onclick="pSched(\'intercessory\')"> Print Schedule</button>'
+    +(anySubInt?'<button class="btn btn-navy btn-sm" onclick="pSessionLists(JSON.parse(this.dataset.a))" data-a="'+allJsonInt+'"> Print All Prayer Lists</button>':'')
     +'</div>';
   let h='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">';
   MONS.forEach(function(mo){
@@ -1181,7 +1181,7 @@ function renderIntSched(){
     entries.forEach(function(e){
       const cid=CHURCH_ABBREV[e.c];
       const hasSub=cid&&ch(cid)&&ch(cid).sub;
-      const pb=hasSub?'<button class="btn btn-ghost btn-sm" style="padding:1px 7px;font-size:10px;" onclick="pChurchByAbbrev(\''+e.c+'\')">🖨️</button>':'';
+      const pb=hasSub?'<button class="btn btn-ghost btn-sm" style="padding:1px 7px;font-size:10px;" onclick="pChurchByAbbrev(\''+e.c+'\')"></button>':'';
       h+='<div style="padding:3px 0;font-size:13px;color:#1a2340;display:flex;align-items:center;gap:6px;flex-wrap:wrap;"><span>Fri '+e.d+' — '+e.c+'</span>'+pb+'</div>';
     });
     h+='</div></div>';
@@ -1206,12 +1206,12 @@ function tMg(h){h.classList.toggle('closed');h.nextElementSibling.classList.togg
 function addMgPt(btn){
   const d=btn.previousElementSibling;
   const row=document.createElement('div');row.className='mg-row';
-  row.innerHTML=`<textarea placeholder="Prayer point…"></textarea><button class="btn btn-ghost btn-sm" style="margin-top:2px;" onclick="this.parentElement.remove()">✕</button>`;
+  row.innerHTML=`<textarea placeholder="Prayer point…"></textarea><button class="btn btn-ghost btn-sm" style="margin-top:2px;" onclick="this.parentElement.remove()">×</button>`;
   d.appendChild(row);row.querySelector('textarea').focus();
 }
 function addTR(cid,cat){
   const c=document.getElementById(cid);const row=document.createElement('div');row.className='irow';
-  row.innerHTML=`<textarea placeholder="Enter prayer point…" style="flex:1;"></textarea><button class="btn btn-ghost btn-sm" style="margin-top:2px;" onclick="this.parentElement.remove()">✕</button>`;
+  row.innerHTML=`<textarea placeholder="Enter prayer point…" style="flex:1;"></textarea><button class="btn btn-ghost btn-sm" style="margin-top:2px;" onclick="this.parentElement.remove()">×</button>`;
   c.appendChild(row);
 }
 function addNR(cid,cat){
@@ -1219,7 +1219,7 @@ function addNR(cid,cat){
   const sub=cat==='personal'?`<select style="width:130px;">${PTYPES.map(t=>`<option value="${t.id}">${t.label}</option>`).join('')}</select>`:'';
   const ph={healing:'Illness/condition…',salvation:'Name/relationship…',financial:'Need/purpose…',thanksgiving:'Praise report…',personal:'Prayer concern…'}[cat]||'Details…';
   row.innerHTML=`<input type="text" placeholder="Name" style="width:120px;">${sub}<textarea placeholder="${ph}" style="flex:1;"></textarea>
-    <button class="btn btn-ghost btn-sm" style="margin-top:2px;" onclick="this.parentElement.remove()">✕</button>`;
+    <button class="btn btn-ghost btn-sm" style="margin-top:2px;" onclick="this.parentElement.remove()">×</button>`;
   c.appendChild(row);
 }
 function collectForm(){
@@ -1261,7 +1261,7 @@ function doSubmit(){
   const wd=document.getElementById('dup-warn');
   if(warns.length){
     wd.style.display='block';
-    wd.innerHTML=`⚠️ <b>Possible duplicates detected:</b><ul style="margin:6px 0 0 18px;">${warns.map(w=>`<li>${w}</li>`).join('')}</ul>
+    wd.innerHTML=` <b>Possible duplicates detected:</b><ul style="margin:6px 0 0 18px;">${warns.map(w=>`<li>${w}</li>`).join('')}</ul>
       <div style="margin-top:10px;display:flex;gap:8px;">
         <button class="btn btn-navy btn-sm" onclick="confirmSub()">Submit Anyway</button>
         <button class="btn btn-ghost btn-sm" onclick="document.getElementById('dup-warn').style.display='none'">Review First</button>
@@ -1309,7 +1309,7 @@ function renderUnanswered(){
     if(!items.length)return;
     totalCount+=items.length;churchCount++;
     html+='<div class="card" style="margin-bottom:20px;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);">'
-      +'<div style="background:#1a3560;padding:13px 16px;display:flex;align-items:center;gap:10px;">'
+      +'<div style="background:#8c4a35;padding:13px 16px;display:flex;align-items:center;gap:10px;">'
       +'<div style="flex:1;">'
       +'<div style="font-size:15px;font-weight:800;color:#fff;">'+c.name+'</div>'
       +'<div style="font-size:12px;color:rgba(255,255,255,.68);margin-top:3px;">'+c.pastor+'</div>'
@@ -1325,7 +1325,7 @@ function renderUnanswered(){
       if(ct==='ministry'){
         MINS.forEach(function(m){
           var mi=rows.filter(function(r){return r.ministry===m.id;});if(!mi.length)return;
-          html+='<div style="font-size:11px;background:#e4eefa;color:#1a3560;padding:1px 8px;border-radius:4px;display:inline-block;margin:2px 14px 4px;">'+m.id+'</div>';
+          html+='<div style="font-size:11px;background:#e4eefa;color:#8c4a35;padding:1px 8px;border-radius:4px;display:inline-block;margin:2px 14px 4px;">'+m.id+'</div>';
           mi.forEach(function(r,i){
             html+='<div class="pr" style="padding:5px 14px;"><span class="pr-n">'+(i+1)+'.</span><div class="pr-body">'+r.request+'</div></div>';
           });
@@ -1341,7 +1341,7 @@ function renderUnanswered(){
   });
   if(!html){
     container.innerHTML='<div class="empty" style="padding:40px 24px;">'
-      +'<div style="font-size:28px;margin-bottom:10px;">🎉</div>'
+      +'<div style="font-size:28px;margin-bottom:10px;"></div>'
       +'<div style="font-weight:700;color:var(--green);margin-bottom:6px;">All prayers have been answered!</div>'
       +'<div style="font-size:12px;color:var(--muted);">No pending requests without updates found.</div>'
       +'</div>';
@@ -1349,7 +1349,7 @@ function renderUnanswered(){
   }
   var summary='<div style="background:var(--abg);border:1px solid #ffd070;border-radius:var(--r);'
     +'padding:13px 16px;margin-bottom:18px;display:flex;align-items:center;gap:12px;">'
-    +'<span style="font-size:28px;">⏳</span>'
+    +'<span style="font-size:28px;"></span>'
     +'<div><div style="font-weight:800;color:var(--amber);font-size:15px;">'+totalCount+' Active Prayer Request'+(totalCount!==1?'s':'')+'</div>'
     +'<div style="font-size:12px;color:var(--muted);margin-top:2px;">Across '+churchCount+' church'+(churchCount!==1?'es':'')+' — still awaiting God\'s answer</div>'
     +'</div></div>';
@@ -1391,7 +1391,7 @@ function renderDuplicates(){
   });
   if(!dups.length){
     container.innerHTML='<div class="empty" style="padding:40px 24px;">'
-      +'<div style="font-size:28px;margin-bottom:10px;">✅</div>'
+      +'<div style="font-size:28px;margin-bottom:10px;"></div>'
       +'<div style="font-weight:700;color:var(--green);margin-bottom:6px;">No duplicates found</div>'
       +'<div style="font-size:12px;color:var(--muted);">All prayer requests appear to be unique across churches.</div>'
       +'</div>';
@@ -1399,7 +1399,7 @@ function renderDuplicates(){
   }
   var summary='<div style="background:var(--redbg);border:1px solid #f5b7b1;border-radius:var(--r);'
     +'padding:13px 16px;margin-bottom:18px;display:flex;align-items:center;gap:12px;">'
-    +'<span style="font-size:28px;">🔁</span>'
+    +'<span style="font-size:28px;"></span>'
     +'<div><div style="font-weight:800;color:#c0392b;font-size:15px;">'+dups.length+' Duplicate'+(dups.length!==1?'s':'')+' Detected</div>'
     +'<div style="font-size:12px;color:var(--muted);margin-top:2px;">Same person or concern submitted by multiple churches — coordinate before the meeting</div>'
     +'</div></div>';
@@ -1490,7 +1490,7 @@ function renderAnswered(){
   });
   if(!html){
     container.innerHTML='<div class="empty" style="padding:40px 24px;">'
-      +'<div style="font-size:28px;margin-bottom:10px;">🙌</div>'
+      +'<div style="font-size:28px;margin-bottom:10px;"></div>'
       +'<div style="font-weight:700;color:var(--navy);margin-bottom:6px;">No answered prayers recorded yet</div>'
       +'<div style="font-size:12px;color:var(--muted);">Thanksgiving items and prayer updates will appear here once churches submit.</div>'
       +'</div>';
@@ -1498,7 +1498,7 @@ function renderAnswered(){
   }
   var summary='<div style="background:var(--gbg);border:1px solid #b2dfbb;border-radius:var(--r);'
     +'padding:13px 16px;margin-bottom:18px;display:flex;align-items:center;gap:12px;">'
-    +'<span style="font-size:28px;">🙌</span>'
+    +'<span style="font-size:28px;"></span>'
     +'<div><div style="font-weight:800;color:var(--green);font-size:15px;">'+totalCount+' Answered Prayer'+(totalCount!==1?'s / Praise Report':' / Praise Report')+'</div>'
     +'<div style="font-size:12px;color:var(--muted);margin-top:2px;">Across '+churchCount+' church'+(churchCount!==1?'es':'')+'</div>'
     +'</div></div>';
