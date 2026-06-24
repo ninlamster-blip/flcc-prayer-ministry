@@ -374,6 +374,12 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:#1a2
         <div class="field"><label>Submitted By</label><input type="text" id="f-by" placeholder="Your name"></div>
       </div>
       <hr class="divider">
+      <div id="carryover-notice"></div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 14px;margin-bottom:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <span style="font-size:12px;color:var(--muted);">♻️ <b>Carry over from previous CPM:</b></span>
+        <button class="btn btn-ghost btn-sm" onclick="carryOverFromFile()">📂 Load from Saved File</button>
+        <button class="btn btn-ghost btn-sm" onclick="carryOverFromDashboard()">📋 Load from Dashboard</button>
+      </div>
       <div class="sec"><div class="sec-hdr" onclick="tSec(this)">1 · Church Prayer Concerns <span class="arr">▼</span></div>
         <div class="sec-body"><p class="tip">General church needs, vision, leadership, events.</p><div id="fi-church"></div>
           <button class="btn btn-ghost btn-sm" onclick="addTR('fi-church','church')" style="margin-top:6px;">+ Add</button></div></div>
@@ -723,8 +729,8 @@ function ch(id){return CHURCHES.find(c=>c.id===id);}
 function tSec(h){h.classList.toggle('closed');h.nextElementSibling.classList.toggle('hide');}
 function dupSet(){
   const m={};
-  PRAYERS.forEach(p=>{if(!p.name)return;const k=`${p.name.trim().toLowerCase()}|${p.cat}`;if(!m[k])m[k]=new Set();m[k].add(p.church);});
-  const s=new Set();Object.entries(m).forEach(([k,v])=>{if(v.size>1)s.add(k);});return s;
+  PRAYERS.forEach(p=>{if(!p.name)return;const k=`${p.name.trim().toLowerCase()}|${p.cat}`;m[k]=(m[k]||0)+1;});
+  const s=new Set();Object.entries(m).forEach(([k,v])=>{if(v>1)s.add(k);});return s;
 }
 
 // ════════════════════════════════
@@ -1072,7 +1078,7 @@ function renderLists(){
       } else {
         rows.forEach((r,i)=>{
           const dk=((r.name||'').trim().toLowerCase())+'|'+r.cat;
-          const flag=r.name&&dups.has(dk)?'<span class="dup-flag" title="Same name in another church\'s list"> Flagged</span>':'';
+          const flag=r.name&&dups.has(dk)?'<span class="dup-flag" title="This name appears more than once in submitted lists"> Flagged</span>':'';
           const nm=r.name?'<span class="pr-name">'+r.name+'</span> — ':'';
           const sub=r.subcat&&r.subcat!=='personal'?(PTYPES.find(t=>t.id===r.subcat)||{label:r.subcat}).label:'';
           const st=sub?'<span class="stag">'+sub+'</span> ':'';
@@ -1417,6 +1423,72 @@ function initRows(){
   addNR('fi-salvation','salvation');addNR('fi-financial','financial');addNR('fi-thanksgiving','thanksgiving');
   addTR('fi-israel','israel');addTR('fi-world','world');addTR('fi-kuwait','kuwait');addTR('fi-philippines','philippines');
 }
+function loadIntoForm(data){
+  ['fi-church','fi-personal','fi-healing','fi-salvation','fi-financial','fi-thanksgiving','fi-israel','fi-world','fi-kuwait','fi-philippines']
+    .forEach(function(id){var el=document.getElementById(id);if(el)el.innerHTML='';});
+  buildMinForm();
+  document.getElementById('dup-warn').style.display='none';
+  document.getElementById('post-sub').style.display='none';
+  if(data.church)document.getElementById('f-ch').value=data.church;
+  if(data.submittedBy)document.getElementById('f-by').value=data.submittedBy;
+  var trCats=['church','israel','world','kuwait','philippines'];
+  var nrCats=['personal','healing','salvation','financial','thanksgiving'];
+  var ph={healing:'Illness/condition…',salvation:'Name/relationship…',financial:'Need/purpose…',thanksgiving:'Praise report…',personal:'Prayer concern…'};
+  data.prayers.forEach(function(p){
+    if(!p.request||!p.request.trim())return;
+    if(p.cat==='ministry'){
+      var mg=document.querySelector('#fi-ministry .mg[data-mg="'+p.ministry+'"]');
+      if(!mg)return;
+      var items=mg.querySelector('.mg-items');if(!items)return;
+      var row=document.createElement('div');row.className='mg-row';
+      row.innerHTML='<textarea placeholder="Prayer point…"></textarea><button class="btn btn-ghost btn-sm" style="margin-top:2px;" onclick="this.parentElement.remove()">✕</button>';
+      items.appendChild(row);row.querySelector('textarea').value=p.request;
+    } else if(trCats.indexOf(p.cat)>=0){
+      var c=document.getElementById('fi-'+p.cat);if(!c)return;
+      var row=document.createElement('div');row.className='irow';
+      row.innerHTML='<textarea placeholder="Enter prayer point…" style="flex:1;"></textarea><button class="btn btn-ghost btn-sm" style="margin-top:2px;" onclick="this.parentElement.remove()">✕</button>';
+      c.appendChild(row);row.querySelector('textarea').value=p.request;
+    } else if(nrCats.indexOf(p.cat)>=0){
+      var c=document.getElementById('fi-'+p.cat);if(!c)return;
+      var row=document.createElement('div');row.className='irow';
+      var sub=p.cat==='personal'?'<select style="width:130px;">'+PTYPES.map(function(t){return'<option value="'+t.id+'"'+(t.id===p.subcat?' selected':'')+'>'+(t.label||t.id)+'</option>';}).join('')+'</select>':'';
+      row.innerHTML='<input type="text" placeholder="Name" style="width:120px;">'+sub+'<textarea placeholder="'+(ph[p.cat]||'Details…')+'" style="flex:1;"></textarea><button class="btn btn-ghost btn-sm" style="margin-top:2px;" onclick="this.parentElement.remove()">✕</button>';
+      c.appendChild(row);
+      if(p.name)row.querySelector('input[type=text]').value=p.name;
+      row.querySelector('textarea').value=p.request;
+    }
+  });
+}
+function _showCarryNotice(n){
+  document.getElementById('carryover-notice').innerHTML='<div style="background:#e8f4fd;border:1px solid #b3d7f0;border-radius:6px;padding:10px 14px;margin-bottom:12px;font-size:13px;">'
+    +'✏️ <b>'+n+' prayer item'+(n!==1?'s':'')+' loaded.</b> Remove answered prayers, edit as needed, then click <b>Submit to Dashboard</b>.</div>';
+}
+function carryOverFromFile(){
+  var input=document.createElement('input');input.type='file';input.accept='.json';
+  input.onchange=function(e){
+    var file=e.target.files[0];if(!file)return;
+    var reader=new FileReader();
+    reader.onload=function(ev){
+      try{
+        var data=JSON.parse(ev.target.result);
+        if(!data.church||!data.prayers){alert('Invalid file format.');return;}
+        loadIntoForm(data);
+        _showCarryNotice(data.prayers.length);
+        document.getElementById('f-ch').scrollIntoView({behavior:'smooth',block:'center'});
+      }catch(err){alert('Error reading file: '+err.message);}
+    };
+    reader.readAsText(file);
+  };
+  document.body.appendChild(input);input.click();document.body.removeChild(input);
+}
+function carryOverFromDashboard(){
+  var cid=document.getElementById('f-ch').value;
+  if(!cid){alert('Please select your church first.');return;}
+  var prayers=PRAYERS.filter(function(p){return p.church===cid;});
+  if(!prayers.length){alert('No prayers found for this church in the dashboard.');return;}
+  loadIntoForm({church:cid,submittedBy:'',prayers:prayers});
+  _showCarryNotice(prayers.length);
+}
 
 // ════════════════════════════════
 //  UNANSWERED PRAYERS
@@ -1509,16 +1581,15 @@ function renderDuplicates(){
     if(!m[k])m[k]=[];
     m[k].push(p);
   });
-  // Keep only those appearing in more than one church
+  // Keep those appearing more than once (same or different church)
   var dups=Object.entries(m).filter(function(entry){
-    var churches=new Set(entry[1].map(function(p){return p.church;}));
-    return churches.size>1;
+    return entry[1].length>1;
   });
   if(!dups.length){
     container.innerHTML='<div class="empty" style="padding:40px 24px;">'
       +'<div style="font-size:28px;margin-bottom:10px;"></div>'
       +'<div style="font-weight:700;color:var(--green);margin-bottom:6px;">No duplicates found</div>'
-      +'<div style="font-size:12px;color:var(--muted);">All prayer requests appear to be unique across churches.</div>'
+      +'<div style="font-size:12px;color:var(--muted);">All prayer requests appear to be unique.</div>'
       +'</div>';
     return;
   }
@@ -1526,7 +1597,7 @@ function renderDuplicates(){
     +'padding:13px 16px;margin-bottom:18px;display:flex;align-items:center;gap:12px;">'
     +'<span style="font-size:28px;"></span>'
     +'<div><div style="font-weight:800;color:#c0392b;font-size:15px;">'+dups.length+' Duplicate'+(dups.length!==1?'s':'')+' Detected</div>'
-    +'<div style="font-size:12px;color:var(--muted);margin-top:2px;">Same person or concern submitted by multiple churches — coordinate before the meeting</div>'
+    +'<div style="font-size:12px;color:var(--muted);margin-top:2px;">Same person or concern submitted more than once — coordinate before the meeting</div>'
     +'</div></div>';
   var html='';
   dups.forEach(function(entry){
@@ -1535,13 +1606,16 @@ function renderDuplicates(){
     var displayName=prayers[0].name;
     var catLabel=CAT[parts[1]]?CAT[parts[1]].label:parts[1];
     var churchesInvolved=Array.from(new Set(prayers.map(function(p){return p.church;})));
+    var entryCount=prayers.length;
+    var churchCount=churchesInvolved.length;
+    var countLabel=entryCount+' entr'+(entryCount!==1?'ies':'y')+' · '+churchCount+' church'+(churchCount!==1?'es':'');
     html+='<div class="card" style="margin-bottom:16px;border:1px solid #f5b7b1;border-radius:var(--r);overflow:hidden;">'
       +'<div style="background:#fdecea;padding:11px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">'
       +'<div style="flex:1;">'
       +'<span style="font-size:14px;font-weight:800;color:#c0392b;">'+displayName+'</span>'
       +'<span style="font-size:11px;background:#fff;border:1px solid #f5b7b1;color:#c0392b;padding:1px 8px;border-radius:8px;margin-left:8px;">'+catLabel+'</span>'
       +'</div>'
-      +'<span style="font-size:12px;color:#c0392b;font-weight:600;">'+churchesInvolved.length+' churches</span>'
+      +'<span style="font-size:12px;color:#c0392b;font-weight:600;">'+countLabel+'</span>'
       +'</div>'
       +'<div style="padding:12px 16px;">';
     churchesInvolved.forEach(function(cid){
@@ -1654,6 +1728,29 @@ function buildSelects(){
   });
 }
 buildSelects();buildMinForm();initRows();renderOverview();initNextLead();
+
+// Auto-populate print zone when user prints via Ctrl+P (print-zone is empty unless a print button was clicked)
+window.addEventListener('beforeprint',function(){
+  var pz=document.getElementById('print-zone');
+  if(pz.innerHTML.trim())return;
+  var sub=CHURCHES.filter(function(c){return c.sub;});
+  if(!sub.length)return;
+  var h='<h2>FLCC Corporate Prayer Meeting — All Submitted Prayer Lists</h2>'
+    +'<p style="font-size:12px;color:#666;margin-bottom:16px;">Printed: '+new Date().toLocaleDateString()+'</p>';
+  sub.forEach(function(c){h+=buildBlock(c,PRAYERS.filter(function(p){return p.church===c.id;}));});
+  var nl=nextCpmLeadChurch();
+  if(nl){
+    var cid=CHURCH_ABBREV[nl.church];var cObj=cid?ch(cid):null;var cName=cObj?cObj.name:nl.church;
+    h+='<div class="print-page-footer"><span>FLCC Corporate Prayer Meeting · Kuwait Network</span>'
+      +'<span>Lead Church: <span class="ppf-lead">'+cName+'</span> · '+nl.date+', 2026 · 6:30 PM</span></div>';
+  }
+  pz.innerHTML=h;
+  pz.dataset.autoFilled='1';
+});
+window.addEventListener('afterprint',function(){
+  var pz=document.getElementById('print-zone');
+  if(pz.dataset.autoFilled){pz.innerHTML='';delete pz.dataset.autoFilled;}
+});
 </script>
 </body>
 </html>
