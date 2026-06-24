@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FLCC – Spiritual Gifts 2026</title>
+<style>
+:root{
+  --navy:#1a3560;--gold:#c9a030;--bg:#f5f7fb;--white:#fff;
+  --border:#dde3ef;--muted:#6b7a9a;
+  --green:#1e7a3c;--gbg:#e8f5ec;
+  --amber:#7a5500;--abg:#fff7e0;
+  --redbg:#fdecea;--bluebg:#e4eefa;--purplebg:#f0ebff;--tealbg:#e0f4f1;
+  --r:8px;--sh:0 1px 6px rgba(26,53,96,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:#1a2340;font-size:14px;}
+.hdr{background:var(--navy);color:#fff;padding:12px 22px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.hdr h1{font-size:17px;font-weight:700;}
+.hdr p{font-size:11px;opacity:.72;margin-top:2px;}
+.tabs{background:var(--navy);display:flex;padding:0 18px;border-top:1px solid rgba(255,255,255,.1);overflow-x:auto;}
+.tab{background:none;border:none;color:rgba(255,255,255,.65);padding:10px 14px;cursor:pointer;font-size:13px;font-weight:600;border-bottom:3px solid transparent;white-space:nowrap;}
+.tab:hover{color:#fff;}
+.tab.on{color:#ffd970;border-bottom-color:var(--gold);}
+.panel{display:none;padding:16px 22px 50px;}
+.panel.on{display:block;}
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);}
+.card-head{padding:11px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.card-head h3{font-size:14px;font-weight:700;color:var(--navy);flex:1;}
+.card-body{padding:14px 16px;}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:6px;border:none;cursor:pointer;font-size:13px;font-weight:600;transition:filter .15s;}
+.btn:hover{filter:brightness(.9);}
+.btn-navy{background:var(--navy);color:#fff;}
+.btn-gold{background:var(--gold);color:#fff;}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--navy);}
+.btn-green{background:var(--green);color:#fff;}
+.btn-sm{padding:4px 10px;font-size:12px;}
+.badge{display:inline-block;padding:2px 9px;border-radius:10px;font-size:11px;font-weight:700;}
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:12px;}
+.field label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;}
+.field input,.field select{padding:7px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:inherit;color:#1a2340;background:#fff;outline:none;}
+.field input:focus,.field select:focus{border-color:var(--navy);}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:580px){.frow{grid-template-columns:1fr;}}
+.divider{border:none;border-top:1px solid var(--border);margin:14px 0;}
+.tip{font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.6;}
+.empty{text-align:center;padding:24px;color:var(--muted);}
+.sbar{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap;}
+.sbar input,.sbar select{padding:7px 11px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:#fff;outline:none;}
+.sbar input:focus,.sbar select:focus{border-color:var(--navy);}
+
+/* Progress wizard */
+.wizard-steps{display:flex;align-items:center;margin-bottom:8px;}
+.sd{width:30px;height:30px;border-radius:50%;background:#e4eefa;color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;transition:all .2s;}
+.sd.done{background:var(--green);color:#fff;}
+.sd.active{background:var(--navy);color:#fff;}
+.sl{flex:1;height:2px;background:#e4eefa;transition:background .2s;}
+.sl.done{background:var(--green);}
+.wlabels{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:20px;}
+
+/* Questions */
+.prog-wrap{background:#e4eefa;border-radius:4px;height:6px;margin:0 0 16px;}
+.prog-bar{background:var(--gold);height:6px;border-radius:4px;transition:width .3s;}
+.q-block{margin-bottom:16px;padding:14px;background:#fafbff;border:1px solid var(--border);border-radius:var(--r);}
+.q-text{font-size:13px;font-weight:600;color:#1a2340;margin-bottom:10px;line-height:1.55;}
+.q-opts{display:flex;gap:6px;flex-wrap:wrap;}
+.q-opt{flex:1;min-width:70px;}
+.q-opt input{display:none;}
+.q-opt label{display:block;text-align:center;padding:7px 4px;border:2px solid var(--border);border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;color:var(--muted);transition:all .15s;user-select:none;}
+.q-opt input:checked+label{border-color:var(--navy);background:var(--navy);color:#fff;}
+.q-opt label:hover{border-color:var(--navy);color:var(--navy);}
+
+/* Results */
+.gift-result{padding:12px 14px;border:1px solid var(--border);border-radius:var(--r);margin-bottom:8px;display:flex;align-items:center;gap:12px;}
+.gift-result.primary{border-color:var(--gold);background:linear-gradient(90deg,#fffbe6,#fff);}
+.gift-bar-wrap{flex:1;background:#eee;border-radius:4px;height:8px;}
+.gift-bar{height:8px;border-radius:4px;}
+
+/* Gift guide cards */
+.gift-card{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:14px;}
+.gift-card:hover{box-shadow:0 4px 16px rgba(26,53,96,.12);}
+.gift-card-name{font-size:14px;font-weight:800;color:var(--navy);margin-bottom:4px;}
+.gift-card-desc{font-size:12px;color:#333;line-height:1.6;margin-bottom:6px;}
+.gift-card-ref{font-size:11px;color:var(--muted);font-style:italic;}
+
+/* Member cards */
+.member-card{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;}
+.member-avatar{width:36px;height:36px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0;}
+.member-name{font-size:14px;font-weight:700;color:var(--navy);}
+.member-church{font-size:11px;color:var(--muted);}
+.member-gifts{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;}
+
+/* Gift tag colours */
+.gt-admin{background:#e3f0ff;color:#1a3560;}
+.gt-apostle{background:#f0ebff;color:#4a1a80;}
+.gt-discern{background:#e0f4f1;color:#005040;}
+.gt-evan{background:#fff0e0;color:#7a3800;}
+.gt-exhort{background:#e8f5ec;color:#1e7a3c;}
+.gt-faith{background:#fffbe6;color:#7a5500;}
+.gt-giving{background:#d4edda;color:#155724;}
+.gt-healing{background:#fce4ec;color:#800030;}
+.gt-helps{background:#e4eefa;color:#1a3560;}
+.gt-hosp{background:#fff3e0;color:#6d3a00;}
+.gt-know{background:#ede7f6;color:#311b92;}
+.gt-lead{background:#dbe8ff;color:#003080;}
+.gt-mercy{background:#fce4ec;color:#7a0050;}
+.gt-miracle{background:#f3e5f5;color:#6a0080;}
+.gt-pastor{background:#c8e6c9;color:#1b5e20;}
+.gt-proph{background:#fff9c4;color:#5c4a00;}
+.gt-teach{background:#e1f5fe;color:#01579b;}
+.gt-tongue{background:#e0f7fa;color:#004d40;}
+.gt-interp{background:#e0f2f1;color:#00352d;}
+.gt-wisdom{background:#fffde7;color:#5c4000;}
+
+/* Overview stat */
+.stat-val{font-size:26px;font-weight:800;}
+
+/* Print */
+#print-zone{display:none;}
+@media print{
+  body>*:not(#print-zone){display:none!important;}
+  #print-zone{display:block!important;font-family:'Segoe UI',sans-serif;font-size:13px;padding:20px;}
+  .print-hdr{background:#1a3560!important;color:#fff!important;padding:10px 16px;margin-bottom:16px;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="hdr">
+  <div>
+    <h1>FLCC – Spiritual Gifts 2026</h1>
+    <p style="margin-top:3px;">Filipino Language Christian Congregation · Kuwait Network</p>
+    <p style="margin-top:4px;opacity:1;font-size:12px;display:flex;gap:16px;flex-wrap:wrap;">
+      <span>Prayer Ministry Head: <strong style="color:#ffd970;">Sis. Zen Alim</strong></span>
+      <span>CPM Coordinator: <strong style="color:#ffd970;">Ptr. Doddie Arciaga</strong></span>
+    </p>
+  </div>
+  <div style="margin-left:auto;">
+    <a href="index.html" style="color:rgba(255,255,255,.75);font-size:12px;text-decoration:none;border:1px solid rgba(255,255,255,.3);padding:5px 12px;border-radius:6px;">← Prayer Ministry</a>
+  </div>
+</header>
+
+<!-- TABS -->
+<nav class="tabs">
+  <button class="tab on"  onclick="sw('overview',this)">📊 Overview</button>
+  <button class="tab"     onclick="sw('assessment',this)">📝 Take Assessment</button>
+  <button class="tab"     onclick="sw('directory',this)">👥 Directory</button>
+  <button class="tab"     onclick="sw('guide',this)">🎁 Gifts Guide</button>
+</nav>
+
+<!-- ══════ OVERVIEW ══════ -->
+<div class="panel on" id="panel-overview">
+  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;">
+    <div class="card" style="flex:1;min-width:110px;"><div class="card-body" style="text-align:center;">
+      <div class="stat-val" style="color:var(--navy);" id="ov-total">0</div>
+      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;">Assessments</div>
+    </div></div>
+    <div class="card" style="flex:1;min-width:110px;"><div class="card-body" style="text-align:center;">
+      <div class="stat-val" style="color:var(--green);" id="ov-churches">0</div>
+      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;">Churches</div>
+    </div></div>
+    <div class="card" style="flex:2;min-width:180px;border-left:4px solid var(--gold);"><div class="card-body">
+      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">Most Common Gift</div>
+      <div style="font-size:15px;font-weight:800;color:var(--navy);" id="ov-top-gift">—</div>
+    </div></div>
+  </div>
+  <div class="card" style="margin-bottom:16px;">
+    <div class="card-head"><h3>Gift Distribution</h3><span style="font-size:12px;color:var(--muted);">Top gifts across all assessed members</span></div>
+    <div class="card-body" id="ov-dist"></div>
+  </div>
+  <div class="card">
+    <div class="card-head"><h3>By Church</h3>
+      <button class="btn btn-ghost btn-sm" style="margin-left:auto;" onclick="exportCSV()">📥 Export CSV</button>
+    </div>
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead><tr>
+          <th style="background:var(--navy);color:#fff;padding:9px 12px;text-align:left;">Church</th>
+          <th style="background:var(--navy);color:#fff;padding:9px 12px;text-align:left;">Members</th>
+          <th style="background:var(--navy);color:#fff;padding:9px 12px;text-align:left;">Top Gifts</th>
+        </tr></thead>
+        <tbody id="ov-church-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ ASSESSMENT ══════ -->
+<div class="panel" id="panel-assessment">
+  <div style="max-width:720px;">
+    <!-- Wizard steps -->
+    <div class="wizard-steps" id="wizard-steps">
+      <div class="sd active" id="sd-1">1</div>
+      <div class="sl" id="sl-1"></div>
+      <div class="sd" id="sd-2">2</div>
+      <div class="sl" id="sl-2"></div>
+      <div class="sd" id="sd-3">3</div>
+      <div class="sl" id="sl-3"></div>
+      <div class="sd" id="sd-4">4</div>
+      <div class="sl" id="sl-4"></div>
+      <div class="sd" id="sd-5">5</div>
+      <div class="sl" id="sl-5"></div>
+      <div class="sd" id="sd-6">✓</div>
+    </div>
+    <div class="wlabels">
+      <span>Info</span><span>Q 1–20</span><span>Q 21–40</span><span>Q 41–60</span><span>Q 61–80</span><span>Results</span>
+    </div>
+
+    <!-- Step 1: Info -->
+    <div id="astep-1">
+      <div class="card">
+        <div class="card-head"><span>📝</span><h3>Spiritual Gifts Self-Assessment</h3></div>
+        <div class="card-body">
+          <p class="tip">This assessment contains <strong>80 statements</strong>. Rate each on how well it describes you — from <em>Never</em> to <em>Often</em>. Answer honestly based on your real experience, not what you think the "right" answer is. Estimated time: <strong>10–15 minutes</strong>.</p>
+          <div class="frow" style="margin-top:12px;">
+            <div class="field"><label>Your Full Name</label><input type="text" id="a-name" placeholder="e.g. Bro. Juan dela Cruz"></div>
+            <div class="field"><label>Your Church</label><select id="a-church"><option value="">— Select church —</option></select></div>
+          </div>
+          <button class="btn btn-navy" onclick="startAssessment()" style="margin-top:4px;">Begin Assessment →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Steps 2–5: Questions -->
+    <div id="astep-q" style="display:none;">
+      <div class="card">
+        <div class="card-head">
+          <h3 id="q-page-title">Questions 1–20</h3>
+          <span style="font-size:12px;color:var(--muted);">Rate each: Never · Rarely · Sometimes · Often</span>
+        </div>
+        <div class="card-body">
+          <div class="prog-wrap"><div class="prog-bar" id="q-prog" style="width:25%"></div></div>
+          <div id="q-container"></div>
+          <div style="display:flex;gap:10px;margin-top:16px;">
+            <button class="btn btn-ghost" id="q-prev-btn" onclick="prevPage()" style="display:none;">← Previous</button>
+            <button class="btn btn-navy" id="q-next-btn" onclick="nextPage()">Next →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 6: Results -->
+    <div id="astep-results" style="display:none;">
+      <div class="card">
+        <div class="card-head">
+          <span>🎁</span><h3>Your Spiritual Gifts Profile</h3>
+          <div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn btn-ghost btn-sm" onclick="printResults()">🖨️ Print</button>
+            <button class="btn btn-navy btn-sm" onclick="saveMember()">💾 Save to Directory</button>
+          </div>
+        </div>
+        <div class="card-body" id="results-body"></div>
+      </div>
+      <div style="margin-top:12px;display:flex;gap:10px;">
+        <button class="btn btn-ghost" onclick="resetAssessment()">🔄 Take Assessment Again</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ DIRECTORY ══════ -->
+<div class="panel" id="panel-directory">
+  <div class="sbar">
+    <input type="text" id="dir-q" placeholder="🔍 Search name…" oninput="renderDirectory()">
+    <select id="dir-ch" onchange="renderDirectory()"><option value="">All Churches</option></select>
+    <select id="dir-gift" onchange="renderDirectory()"><option value="">All Gifts</option></select>
+    <button class="btn btn-ghost btn-sm" onclick="exportCSV()" style="margin-left:auto;">📥 Export CSV</button>
+    <button class="btn btn-ghost btn-sm" onclick="clearAll()" style="color:#c0392b;">🗑️ Clear All</button>
+  </div>
+  <div id="dir-container"></div>
+</div>
+
+<!-- ══════ GIFTS GUIDE ══════ -->
+<div class="panel" id="panel-guide">
+  <div class="sbar">
+    <input type="text" id="guide-q" placeholder="🔍 Search gifts…" oninput="renderGuide()">
+  </div>
+  <div id="guide-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;"></div>
+</div>
+
+<!-- PRINT ZONE -->
+<div id="print-zone"></div>
+
+<script>
+// ════════════════════════════════
+//  DATA
+// ════════════════════════════════
+const CHURCHES=[
+  {id:"abundance",    name:"Abundance Church",           pastor:"Ptr. Justin Flores & Sis. Alma"},
+  {id:"agape",        name:"Agape Church",                pastor:"Pastor Mike Jacinto / Sis. Irene"},
+  {id:"botr_sun",     name:"BOTR Sunday",                 pastor:"Ptr. Ver Monastrial / Sis. Dianne"},
+  {id:"shekinah",     name:"Shekinah Church",             pastor:"Pastor Michelle Lomboy / Bro. Resty"},
+  {id:"harvesters",   name:"Harvesters Church",           pastor:"Ptra. Verna & Tito De Jesus"},
+  {id:"vc_botr",      name:"VC / BOTR PM",                pastor:"Pastor Anson"},
+  {id:"jao",          name:"Jesus Alpha & Omega (JAOC)",  pastor:"Pastor Elinor Chee / Bro. Charlie"},
+  {id:"cornerstone",  name:"Cornerstone Church",          pastor:"Ptra. Louella Calisagan / Bro. Joey"},
+  {id:"mtcc",         name:"MTCC",                        pastor:"Ptr. Oscar"},
+  {id:"flcc",         name:"FLCC-Kuwait / Virtual",       pastor:"Network Leadership"},
+  {id:"fruitbearers", name:"Fruitbearers Church (FB)",    pastor:"LP Jopet Alim & Ptr. Froilan Quitoriano"},
+  {id:"faithful",     name:"Faithful & True (F&T)",       pastor:"Pastor Rodel Comayingking / Sis. Precy"},
+  {id:"godisnlove",   name:"God Is Love (GIL)",           pastor:"Ptra. Catherine Calzita"}
+];
+
+const GIFTS=[
+  {id:'admin',   name:'Administration',            cls:'gt-admin',   scripture:'1 Cor 12:28',  desc:'The ability to understand what makes an organization function and to plan and execute procedures that accomplish the goals of the ministry with clarity and efficiency.'},
+  {id:'apostle', name:'Apostleship',               cls:'gt-apostle', scripture:'Eph 4:11',     desc:'The ability to start and oversee new churches or ministry ventures, particularly in places where the gospel has not yet been established or is not yet thriving.'},
+  {id:'discern', name:'Discernment',               cls:'gt-discern', scripture:'1 Cor 12:10',  desc:'The ability to distinguish between the spirit of truth and the spirit of error — to recognize clearly whether a teaching, person, or situation is of God, of man, or of the enemy.'},
+  {id:'evan',    name:'Evangelism',                cls:'gt-evan',    scripture:'Eph 4:11',     desc:'The ability to share the good news of Jesus Christ with unbelievers in a clear and compelling way, leading people to saving faith.'},
+  {id:'exhort',  name:'Exhortation',               cls:'gt-exhort',  scripture:'Rom 12:8',     desc:'The ability to come alongside others to encourage, counsel, and motivate them — helping people apply God\'s truth to their lives and press forward in faith.'},
+  {id:'faith',   name:'Faith',                     cls:'gt-faith',   scripture:'1 Cor 12:9',   desc:'The ability to trust God with extraordinary, unwavering confidence and to act on His promises even when circumstances make it humanly impossible.'},
+  {id:'giving',  name:'Giving',                    cls:'gt-giving',  scripture:'Rom 12:8',     desc:'The ability to give generously and joyfully to the needs of the church and kingdom work, trusting God as the ultimate provider and steward.'},
+  {id:'healing', name:'Healing',                   cls:'gt-healing', scripture:'1 Cor 12:9',   desc:'The ability to be used as an instrument of God\'s healing grace — bringing physical, emotional, or spiritual restoration through prayer and faith.'},
+  {id:'helps',   name:'Helps / Serving',           cls:'gt-helps',   scripture:'1 Cor 12:28',  desc:'The ability to support and assist others in the body of Christ through practical service, freeing them to focus fully on their own calling and ministry.'},
+  {id:'hosp',    name:'Hospitality',               cls:'gt-hosp',    scripture:'1 Pet 4:9',    desc:'The ability to create warm, welcoming environments that make people — especially newcomers and strangers — feel genuinely loved, valued, and at home.'},
+  {id:'know',    name:'Knowledge',                 cls:'gt-know',    scripture:'1 Cor 12:8',   desc:'The ability to discover, accumulate, and clearly communicate scriptural information that builds up the body and deepens the church\'s understanding of God\'s truth.'},
+  {id:'lead',    name:'Leadership',                cls:'gt-lead',    scripture:'Rom 12:8',     desc:'The ability to cast vision, motivate people, and direct them clearly in accomplishing the purposes of God with enthusiasm, wisdom, and diligence.'},
+  {id:'mercy',   name:'Mercy',                     cls:'gt-mercy',   scripture:'Rom 12:8',     desc:'The ability to feel and express genuine compassion toward those who are suffering — ministering to the hurting with cheerfulness, patience, and consistent care.'},
+  {id:'miracle', name:'Miracles',                  cls:'gt-miracle', scripture:'1 Cor 12:10',  desc:'The ability to be used as an instrument through whom God performs acts of supernatural power that go beyond natural explanation and authenticate the gospel.'},
+  {id:'pastor',  name:'Pastoring / Shepherding',   cls:'gt-pastor',  scripture:'Eph 4:11',     desc:'The ability to nurture, guide, and protect a group of believers — taking personal, long-term responsibility for their spiritual growth, health, and direction.'},
+  {id:'proph',   name:'Prophecy',                  cls:'gt-proph',   scripture:'1 Cor 14:1',   desc:'The ability to boldly declare God\'s truth in a specific situation — building up, encouraging, and calling people back to faithfulness, sometimes foretelling future events.'},
+  {id:'teach',   name:'Teaching',                  cls:'gt-teach',   scripture:'Rom 12:7',     desc:'The ability to explain and apply the Scriptures in ways that produce genuine understanding, growth, and lasting transformation in the lives of others.'},
+  {id:'tongue',  name:'Tongues',                   cls:'gt-tongue',  scripture:'1 Cor 12:10',  desc:'The ability to speak, praise, or pray in a language not naturally learned — used as a sign, for personal edification, or for a corporate message from the Spirit.'},
+  {id:'interp',  name:'Interpretation of Tongues', cls:'gt-interp',  scripture:'1 Cor 12:10',  desc:'The ability to interpret a message spoken in tongues so that the whole church may understand, be edified, and respond to what the Holy Spirit is saying.'},
+  {id:'wisdom',  name:'Wisdom',                    cls:'gt-wisdom',  scripture:'1 Cor 12:8',   desc:'The ability to understand God\'s perspective on life situations and apply His truth practically to complex, unclear, or difficult circumstances with sound and Spirit-led judgment.'}
+];
+
+// 80 questions — 4 rounds of 20, one question per gift per round
+// Display order: round 1 = Q1-20, round 2 = Q21-40, etc.
+// gifts[i % 20] maps to gift index within each round
+const Q_TEXT=[
+  // Round 1
+  "I enjoy creating systems and procedures that help groups and ministries run more efficiently.",
+  "I feel a strong calling to bring the gospel to people who have never heard it — even in new or unfamiliar places.",
+  "I can often sense when a teaching, person, or spiritual atmosphere is not aligned with God's truth.",
+  "I naturally look for opportunities to share my faith with people who don't yet know Jesus.",
+  "People often come to me when they need encouragement, counsel, or direction in their faith walk.",
+  "I trust God fully and without hesitation, even when the situation seems completely impossible by human standards.",
+  "I find deep and genuine joy in giving generously to God's work, often beyond what seems reasonable.",
+  "I have seen people healed — physically, emotionally, or spiritually — as a direct result of my prayers.",
+  "I get great satisfaction from doing practical, behind-the-scenes tasks that allow others to focus on ministry.",
+  "I love making guests and newcomers feel genuinely welcome, warm, and at home.",
+  "I love researching and studying Scripture deeply to uncover spiritual truths others may have missed.",
+  "People naturally look to me when a group needs clear direction, vision, or someone to take charge.",
+  "I feel deep empathy for people who are hurting, and I am drawn to minister to them personally.",
+  "I have witnessed or experienced what I believe to be a genuine miraculous act of God.",
+  "I feel personally responsible for the long-term spiritual growth of a specific group of people in my care.",
+  "I feel a bold compulsion to speak God's truth clearly, even when it is difficult, unpopular, or confrontational.",
+  "Others have told me that my explanations of Scripture are clear and genuinely helpful to their growth.",
+  "I have prayed or spoken in a language I did not learn naturally, and I believe it was from the Holy Spirit.",
+  "When someone speaks in tongues, I sometimes sense clearly what the Spirit is communicating through them.",
+  "People seek my counsel when facing difficult decisions, trusting my wisdom and perspective.",
+  // Round 2
+  "I am able to define goals clearly and delegate tasks effectively so a group can accomplish them.",
+  "I am willing to sacrifice personal comfort or familiarity to plant or pioneer a new ministry or church.",
+  "I have a strong inner sense when a person's spiritual motives or beliefs are not genuine or aligned with God.",
+  "I find it natural and exciting to initiate conversations about Jesus with people I just met.",
+  "I am gifted at helping people see how biblical truth applies directly to their specific personal struggles.",
+  "When others are fearful or losing hope, my confidence in God tends to genuinely strengthen and encourage them.",
+  "I manage my personal finances deliberately so that I am able to give more to support God's kingdom work.",
+  "I pray with confidence for the sick, believing and expecting God to bring healing in His timing and way.",
+  "I willingly take on routine, difficult, or unglamorous tasks so that others can fulfill their ministry calling.",
+  "I naturally reach out to lonely, overlooked, or new people to make sure they feel included and valued.",
+  "God has revealed significant spiritual insights to me through Scripture that have helped others in meaningful ways.",
+  "I naturally inspire and motivate others to work together toward a shared, God-given vision or goal.",
+  "I am patient and consistently gentle with people that others find difficult, draining, or frustrating to deal with.",
+  "I pray boldly for miraculous intervention even in situations that appear completely hopeless by human standards.",
+  "I love walking alongside the same people over an extended period of time, keeping them spiritually on track.",
+  "God has given me specific words, impressions, or messages for individuals or groups that have proven accurate.",
+  "I feel a deep passion for studying Scripture, and others have genuinely learned from the truths I share.",
+  "I feel a personal sense of calling and desire to pray in tongues as a regular part of my devotional life.",
+  "I have interpreted a message given in tongues in a meeting setting, and it edified and built up those present.",
+  "I understand how biblical principles apply to complex real-life situations, and others benefit from my insight.",
+  // Round 3
+  "Others seek my help when a project, ministry, or event needs better organization, structure, or planning.",
+  "I adapt easily to unfamiliar cultures, communities, or environments in order to advance the gospel there.",
+  "I can readily distinguish between what is genuinely of God and what merely appears spiritual on the surface.",
+  "I regularly share my faith with others, and I have personally led people to accept Jesus as their Savior.",
+  "I see potential in people that they haven't yet seen in themselves, and I help bring that potential out in them.",
+  "I pray bold, specific prayers and genuinely believe God will answer them — even against great odds.",
+  "I often feel a specific leading from God to give a gift or meet someone's financial need, even sacrificially.",
+  "I sense a divine calling to pray persistently and specifically for physical and emotional healing in others.",
+  "I feel deep fulfillment doing behind-the-scenes work that directly supports the success of others in ministry.",
+  "I enjoy providing food, accommodation, or practical care to guests, visitors, or people going through difficulty.",
+  "I am able to gather and organize biblical knowledge in ways that are practically useful and edifying for others.",
+  "I motivate and direct others to work together effectively to move toward a clear, God-given objective.",
+  "I am compelled to act compassionately toward the marginalized, the poor, or the emotionally broken.",
+  "God uses me to demonstrate His power in ways that go beyond natural explanation or human ability.",
+  "I am committed to the long-term spiritual health and development of the specific people entrusted to my care.",
+  "I speak biblical truth with courage and clarity, even when it directly challenges, corrects, or confronts others.",
+  "I communicate biblical truths in a way that people can easily grasp, remember, and apply to their daily lives.",
+  "I believe the Holy Spirit uses speaking in tongues to deepen and enrich my personal prayer and worship life.",
+  "God gives me understanding of spiritual messages delivered in tongues for the edification and good of others.",
+  "My advice consistently helps people navigate complicated or unclear situations with clarity and godly wisdom.",
+  // Round 4
+  "I find deep satisfaction in ensuring that all the details of a ministry project are managed and executed well.",
+  "I feel a sense of calling to start new churches or ministries in places where the gospel has little presence.",
+  "I quickly recognize when a spiritual atmosphere, teaching, or situation does not align with God's Word or Spirit.",
+  "I carry a consistent, deep burden in my heart for people who do not yet have a personal relationship with Christ.",
+  "I feel called to walk closely with struggling believers over time, offering them steady encouragement and guidance.",
+  "My trust in God's promises remains strong in hard situations and regularly strengthens the faith of those around me.",
+  "Giving generously — even sacrificially — to God's kingdom work brings me genuine, lasting joy and peace.",
+  "People have experienced real healing in body, mind, or spirit as a direct result of my prayers for them.",
+  "I serve faithfully in the background without needing recognition, knowing that God sees and honors such service.",
+  "Creating a warm, welcoming atmosphere for guests and strangers comes naturally and brings me real joy.",
+  "I sense a calling to understand God's Word more deeply than most people, specifically for the benefit of the church.",
+  "I am able to oversee and direct others with clarity in a way that draws out the best in them and honors God.",
+  "I show genuine, cheerful compassion to those in physical, emotional, or spiritual pain — even when it is costly.",
+  "I trust God to demonstrate His power supernaturally and regularly pray bold prayers for signs and wonders.",
+  "I take personal responsibility for knowing, guiding, and protecting the spiritual wellbeing of those in my care.",
+  "I have felt compelled to deliver a specific message from God to a person or group, and it came to pass.",
+  "I feel called to help others understand how God's Word applies practically to the real situations they face daily.",
+  "I have used the gift of tongues in a group worship or ministry setting to encourage and edify others.",
+  "I believe God has given me a special ability to interpret messages spoken in tongues for the good of the church.",
+  "I am consistently known among my peers for giving counsel that is wise, balanced, and rooted in God's truth."
+];
+
+// Build flat questions array: 4 rounds × 20 gifts
+const QUESTIONS=[];
+for(var _r=0;_r<4;_r++){
+  for(var _g=0;_g<20;_g++){
+    QUESTIONS.push({gift:_g, text:Q_TEXT[_r*20+_g]});
+  }
+}
+
+const LABELS=['Never','Rarely','Sometimes','Often'];
+
+// ════════════════════════════════
+//  STATE
+// ════════════════════════════════
+var answers=new Array(80).fill(-1);
+var aStep=1;
+var aName='';
+var aChurch='';
+
+// ════════════════════════════════
+//  LOCAL STORAGE
+// ════════════════════════════════
+function loadMembers(){
+  try{return JSON.parse(localStorage.getItem('flcc_gifts_members')||'[]');}
+  catch(e){return [];}
+}
+function saveMembers(m){localStorage.setItem('flcc_gifts_members',JSON.stringify(m));}
+
+// ════════════════════════════════
+//  TABS
+// ════════════════════════════════
+function sw(id,btn){
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('on');});
+  document.querySelectorAll('.tab').forEach(function(b){b.classList.remove('on');});
+  document.getElementById('panel-'+id).classList.add('on');
+  btn.classList.add('on');
+  if(id==='overview')renderOverview();
+  if(id==='directory')renderDirectory();
+  if(id==='guide')renderGuide();
+}
+
+// ════════════════════════════════
+//  OVERVIEW
+// ════════════════════════════════
+function renderOverview(){
+  var members=loadMembers();
+  document.getElementById('ov-total').textContent=members.length;
+  var churches=new Set(members.map(function(m){return m.church;})).size;
+  document.getElementById('ov-churches').textContent=churches;
+
+  var gCount={};
+  GIFTS.forEach(function(g){gCount[g.id]=0;});
+  members.forEach(function(m){
+    (m.topGifts||[]).slice(0,3).forEach(function(gid){gCount[gid]=(gCount[gid]||0)+1;});
+  });
+
+  var sorted=Object.entries(gCount).sort(function(a,b){return b[1]-a[1];});
+  var topId=sorted[0]&&sorted[0][1]>0?sorted[0][0]:null;
+  var topG=topId?GIFTS.find(function(g){return g.id===topId;}):null;
+  document.getElementById('ov-top-gift').textContent=topG?topG.name:'—';
+
+  var distEl=document.getElementById('ov-dist');
+  if(!members.length){
+    distEl.innerHTML='<div class="empty">No assessments yet. Members can take the quiz on the <strong>Take Assessment</strong> tab.</div>';
+  } else {
+    var maxC=sorted[0][1]||1;
+    distEl.innerHTML=sorted.filter(function(e){return e[1]>0;}).map(function(e){
+      var g=GIFTS.find(function(x){return x.id===e[0];});
+      var pct=Math.round((e[1]/maxC)*100);
+      return '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">'
+        +'<span style="min-width:180px;font-size:12px;font-weight:600;color:var(--navy);">'+g.name+'</span>'
+        +'<div style="flex:1;background:#eee;border-radius:4px;height:8px;"><div style="width:'+pct+'%;height:8px;border-radius:4px;background:var(--navy);"></div></div>'
+        +'<span style="min-width:24px;text-align:right;font-size:12px;color:var(--muted);">'+e[1]+'</span>'
+        +'</div>';
+    }).join('');
+  }
+
+  var churchMap={};
+  members.forEach(function(m){
+    if(!churchMap[m.church])churchMap[m.church]=[];
+    churchMap[m.church].push(m);
+  });
+  document.getElementById('ov-church-body').innerHTML=CHURCHES.filter(function(c){return churchMap[c.id];}).map(function(c){
+    var ms=churchMap[c.id];
+    var cg={};
+    ms.forEach(function(m){(m.topGifts||[]).slice(0,3).forEach(function(gid){cg[gid]=(cg[gid]||0)+1;});});
+    var ctop=Object.entries(cg).sort(function(a,b){return b[1]-a[1];}).slice(0,3).map(function(e){
+      var g=GIFTS.find(function(x){return x.id===e[0];});
+      return g?'<span class="badge '+g.cls+'" style="font-size:10px;">'+g.name+'</span>':'';
+    }).join(' ');
+    return '<tr><td style="padding:9px 12px;font-weight:700;border-bottom:1px solid var(--border);">'+c.name+'</td>'
+      +'<td style="padding:9px 12px;border-bottom:1px solid var(--border);">'+ms.length+'</td>'
+      +'<td style="padding:9px 12px;border-bottom:1px solid var(--border);">'+ctop+'</td></tr>';
+  }).join('');
+}
+
+// ════════════════════════════════
+//  ASSESSMENT
+// ════════════════════════════════
+function startAssessment(){
+  var n=document.getElementById('a-name').value.trim();
+  var c=document.getElementById('a-church').value;
+  if(!n){alert('Please enter your name.');return;}
+  if(!c){alert('Please select your church.');return;}
+  aName=n; aChurch=c;
+  answers=new Array(80).fill(-1);
+  goToStep(2);
+}
+
+function goToStep(s){
+  aStep=s;
+  document.getElementById('astep-1').style.display='none';
+  document.getElementById('astep-q').style.display='none';
+  document.getElementById('astep-results').style.display='none';
+
+  // Update wizard dots
+  for(var i=1;i<=6;i++){
+    var dot=document.getElementById('sd-'+i);
+    if(!dot)continue;
+    dot.className='sd'+(i<s?' done':i===s?' active':'');
+    var line=document.getElementById('sl-'+i);
+    if(line)line.className='sl'+(i<s?' done':'');
+  }
+
+  if(s===1){
+    document.getElementById('astep-1').style.display='block';
+  } else if(s>=2&&s<=5){
+    document.getElementById('astep-q').style.display='block';
+    var page=s-1; // 1..4
+    var start=(page-1)*20;
+    var end=page*20;
+    document.getElementById('q-page-title').textContent='Questions '+(start+1)+'–'+end;
+    document.getElementById('q-prog').style.width=(page/4*100)+'%';
+
+    var html='';
+    for(var qi=start;qi<end;qi++){
+      var q=QUESTIONS[qi];
+      html+='<div class="q-block"><div class="q-text">'+(qi+1)+'. '+q.text+'</div><div class="q-opts">';
+      for(var v=0;v<4;v++){
+        html+='<div class="q-opt"><input type="radio" name="q'+qi+'" id="q'+qi+'_'+v+'" value="'+v+'"'+(answers[qi]===v?' checked':'')+' onchange="answers['+qi+']='+v+'">'
+          +'<label for="q'+qi+'_'+v+'">'+LABELS[v]+'</label></div>';
+      }
+      html+='</div></div>';
+    }
+    document.getElementById('q-container').innerHTML=html;
+    document.getElementById('q-prev-btn').style.display=page>1?'inline-flex':'none';
+    document.getElementById('q-next-btn').textContent=page<4?'Next →':'See My Results →';
+    window.scrollTo(0,0);
+  } else if(s===6){
+    document.getElementById('astep-results').style.display='block';
+    buildResults();
+    window.scrollTo(0,0);
+  }
+}
+
+function prevPage(){goToStep(aStep-1);}
+function nextPage(){
+  var page=aStep-1;
+  var start=(page-1)*20, end=page*20;
+  var missing=[];
+  for(var qi=start;qi<end;qi++){if(answers[qi]===-1)missing.push(qi+1);}
+  if(missing.length){alert('Please answer all questions before continuing.\nUnanswered: '+missing.join(', '));return;}
+  goToStep(aStep+1);
+}
+
+function buildResults(){
+  // Tally scores (0–12 per gift)
+  var scores={};
+  GIFTS.forEach(function(g){scores[g.id]=0;});
+  QUESTIONS.forEach(function(q,qi){if(answers[qi]>=0)scores[GIFTS[q.gift].id]+=answers[qi];});
+
+  var ranked=GIFTS.map(function(g){return{gift:g,score:scores[g.id]};}).sort(function(a,b){return b.score-a.score;});
+  var max=12;
+
+  var cName=(CHURCHES.find(function(c){return c.id===aChurch;})||{name:aChurch}).name;
+
+  var html='<div style="background:var(--bluebg);border-radius:var(--r);padding:14px 16px;margin-bottom:20px;">'
+    +'<div style="font-size:15px;font-weight:800;color:var(--navy);margin-bottom:3px;">Assessment Complete! 🎉</div>'
+    +'<div style="font-size:13px;color:#333;">'+aName+' · '+cName+'</div>'
+    +'</div>';
+
+  // Top 5
+  html+='<div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;">Your Spiritual Gift Rankings</div>';
+  ranked.forEach(function(r,i){
+    var pct=Math.round((r.score/max)*100);
+    var isPrimary=i<3;
+    var isSupport=i>=3&&i<5;
+    var cls=isPrimary?'primary':'';
+    var barColor=isPrimary?'var(--gold)':isSupport?'var(--navy)':'#bbb';
+    html+='<div class="gift-result '+cls+'">'
+      +'<div style="min-width:26px;font-size:12px;font-weight:800;color:'+(isPrimary?'var(--gold)':'var(--muted)')+';">#'+(i+1)+'</div>'
+      +'<div style="flex:1;">'
+      +'<div style="font-weight:700;font-size:13px;color:var(--navy);">'+r.gift.name
+      +(isPrimary?' <span style="font-size:10px;background:var(--gold);color:#fff;padding:1px 7px;border-radius:8px;">Primary</span>':'')
+      +(isSupport?' <span style="font-size:10px;background:var(--bluebg);color:var(--navy);padding:1px 7px;border-radius:8px;">Supporting</span>':'')
+      +'</div>'
+      +'<div style="font-size:11px;color:var(--muted);margin:2px 0 5px;">'+r.gift.scripture+'</div>'
+      +'<div class="gift-bar-wrap"><div class="gift-bar" style="width:'+pct+'%;background:'+barColor+';"></div></div>'
+      +'</div>'
+      +'<div style="min-width:40px;text-align:right;font-weight:800;font-size:13px;color:'+(isPrimary?'var(--gold)':'var(--muted)')+';">'+r.score+'/12</div>'
+      +'</div>';
+  });
+
+  // Descriptions for top 3
+  html+='<hr style="border:none;border-top:1px solid var(--border);margin:20px 0;">'
+    +'<div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px;">About Your Primary Gifts</div>';
+  ranked.slice(0,3).forEach(function(r){
+    html+='<div style="margin-bottom:14px;padding:14px;background:#fafbff;border-radius:var(--r);border:1px solid var(--border);">'
+      +'<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">'
+      +'<span class="badge '+r.gift.cls+'" style="font-size:12px;">'+r.gift.name+'</span>'
+      +'<span style="font-size:11px;color:var(--muted);">'+r.gift.scripture+'</span>'
+      +'</div>'
+      +'<div style="font-size:13px;color:#333;line-height:1.65;">'+r.gift.desc+'</div>'
+      +'</div>';
+  });
+
+  document.getElementById('results-body').innerHTML=html;
+  window._lastResults={name:aName,church:aChurch,scores:scores,ranked:ranked};
+}
+
+function saveMember(){
+  if(!window._lastResults){return;}
+  var r=window._lastResults;
+  var members=loadMembers();
+  // Check for duplicate name+church
+  var exists=members.find(function(m){return m.name===r.name&&m.church===r.church;});
+  if(exists){
+    if(!confirm(r.name+' already has a saved result for this church. Replace it?'))return;
+    members=members.filter(function(m){return !(m.name===r.name&&m.church===r.church);});
+  }
+  members.push({
+    id:'m'+Date.now(),
+    name:r.name,
+    church:r.church,
+    scores:r.scores,
+    topGifts:r.ranked.slice(0,5).map(function(x){return x.gift.id;}),
+    date:new Date().toLocaleDateString()
+  });
+  saveMembers(members);
+  alert('Saved to Directory!');
+}
+
+function resetAssessment(){
+  answers=new Array(80).fill(-1);
+  document.getElementById('a-name').value='';
+  document.getElementById('a-church').value='';
+  goToStep(1);
+}
+
+function printResults(){
+  if(!window._lastResults)return;
+  var r=window._lastResults;
+  var cName=(CHURCHES.find(function(c){return c.id===r.church;})||{name:r.church}).name;
+  var h='<div class="print-hdr"><strong style="font-size:15px;">FLCC – Spiritual Gifts Assessment Results</strong></div>'
+    +'<p style="margin-bottom:4px;"><strong>'+r.name+'</strong> · '+cName+' · '+new Date().toLocaleDateString()+'</p>'
+    +'<h3 style="color:#1a3560;margin:16px 0 8px;font-size:14px;">Top 5 Gifts</h3>';
+  r.ranked.slice(0,5).forEach(function(x,i){
+    h+='<p style="margin-bottom:4px;"><strong>#'+(i+1)+' '+x.gift.name+'</strong> — '+x.score+'/12 — '+x.gift.scripture+'</p>';
+  });
+  h+='<h3 style="color:#1a3560;margin:18px 0 8px;font-size:14px;">About Your Primary Gifts</h3>';
+  r.ranked.slice(0,3).forEach(function(x){
+    h+='<p style="margin-bottom:10px;"><strong>'+x.gift.name+'</strong> ('+x.gift.scripture+')<br>'+x.gift.desc+'</p>';
+  });
+  document.getElementById('print-zone').innerHTML=h;
+  window.print();
+}
+
+// ════════════════════════════════
+//  DIRECTORY
+// ════════════════════════════════
+function renderDirectory(){
+  var q=(document.getElementById('dir-q').value||'').toLowerCase();
+  var chF=document.getElementById('dir-ch').value;
+  var gF=document.getElementById('dir-gift').value;
+  var all=loadMembers();
+  var filtered=all.filter(function(m){
+    if(q&&!m.name.toLowerCase().includes(q))return false;
+    if(chF&&m.church!==chF)return false;
+    if(gF&&!(m.topGifts||[]).slice(0,3).includes(gF))return false;
+    return true;
+  });
+  var cont=document.getElementById('dir-container');
+  if(!filtered.length){
+    cont.innerHTML='<div class="empty">'+(all.length===0
+      ?'No assessments saved yet. Take the assessment and click <strong>Save to Directory</strong>.'
+      :'No members match your search.')+'</div>';
+    return;
+  }
+  cont.innerHTML=filtered.map(function(m){
+    var c=CHURCHES.find(function(x){return x.id===m.church;});
+    var init=m.name.replace(/^(Bro\.|Sis\.|Ptr\.|Pastor|Ptra\.)\s*/i,'').split(' ').slice(0,2).map(function(w){return w[0]||'';}).join('').toUpperCase();
+    var gifts=(m.topGifts||[]).slice(0,3).map(function(gid){
+      var g=GIFTS.find(function(x){return x.id===gid;});
+      return g?'<span class="badge '+g.cls+'" style="font-size:10px;">'+g.name+'</span>':'';
+    }).join('');
+    return '<div class="member-card">'
+      +'<div class="member-avatar">'+init+'</div>'
+      +'<div class="member-info">'
+      +'<div class="member-name">'+m.name+'</div>'
+      +'<div class="member-church">'+(c?c.name:m.church)+' · '+m.date+'</div>'
+      +'<div class="member-gifts">'+gifts+'</div>'
+      +'</div>'
+      +'<button class="btn btn-ghost btn-sm" style="color:#c0392b;flex-shrink:0;" onclick="deleteMember(\''+m.id+'\')">✕</button>'
+      +'</div>';
+  }).join('');
+}
+
+function deleteMember(id){
+  if(!confirm('Remove this member from the directory?'))return;
+  saveMembers(loadMembers().filter(function(m){return m.id!==id;}));
+  renderDirectory();
+  renderOverview();
+}
+
+function clearAll(){
+  if(!confirm('Delete all saved assessments? This cannot be undone.'))return;
+  saveMembers([]);
+  renderDirectory();
+  renderOverview();
+}
+
+function exportCSV(){
+  var members=loadMembers();
+  if(!members.length){alert('No data to export.');return;}
+  var rows=[['Name','Church','Date','Gift 1','Gift 2','Gift 3','Gift 4','Gift 5'].join(',')];
+  members.forEach(function(m){
+    var cName=(CHURCHES.find(function(c){return c.id===m.church;})||{name:m.church}).name;
+    var gs=(m.topGifts||[]).map(function(gid){return (GIFTS.find(function(g){return g.id===gid;})||{name:gid}).name;});
+    while(gs.length<5)gs.push('');
+    rows.push([m.name,cName,m.date||''].concat(gs).map(function(v){return '"'+v+'"';}).join(','));
+  });
+  var blob=new Blob([rows.join('\n')],{type:'text/csv'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;a.download='flcc_spiritual_gifts_2026.csv';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ════════════════════════════════
+//  GIFTS GUIDE
+// ════════════════════════════════
+function renderGuide(){
+  var q=(document.getElementById('guide-q').value||'').toLowerCase();
+  var filtered=GIFTS.filter(function(g){
+    return !q||g.name.toLowerCase().includes(q)||g.desc.toLowerCase().includes(q);
+  });
+  document.getElementById('guide-grid').innerHTML=filtered.map(function(g){
+    return '<div class="gift-card">'
+      +'<div class="gift-card-name">'+g.name+'</div>'
+      +'<span class="badge '+g.cls+'" style="margin-bottom:8px;display:inline-block;">'+g.scripture+'</span>'
+      +'<div class="gift-card-desc">'+g.desc+'</div>'
+      +'<div class="gift-card-ref">Key passage: '+g.scripture+'</div>'
+      +'</div>';
+  }).join('');
+}
+
+// ════════════════════════════════
+//  INIT
+// ════════════════════════════════
+(function init(){
+  var aSel=document.getElementById('a-church');
+  var dSel=document.getElementById('dir-ch');
+  var gSel=document.getElementById('dir-gift');
+  CHURCHES.forEach(function(c){
+    aSel.innerHTML+='<option value="'+c.id+'">'+c.name+'</option>';
+    dSel.innerHTML+='<option value="'+c.id+'">'+c.name+'</option>';
+  });
+  GIFTS.forEach(function(g){
+    gSel.innerHTML+='<option value="'+g.id+'">'+g.name+'</option>';
+  });
+  renderOverview();
+  renderGuide();
+})();
+</script>
+</body>
+</html>
